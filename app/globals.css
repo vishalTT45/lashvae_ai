@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0a0a0a;
+  --color-on-primary: #ffffff;
+  --color-primary-soft: #181e25;
+  --color-brand-coral: #ff5530;
+  --color-brand-magenta: #ea5ec1;
+  --color-brand-blue: #1456f0;
+  --color-brand-blue-deep: #1d4ed8;
+  --color-brand-blue-mid: #3b82f6;
+  --color-brand-blue-700: #17437d;
+  --color-brand-cyan: #3daeff;
+  --color-brand-blue-200: #bfdbfe;
+  --color-brand-purple: #a855f7;
+  
+  --color-canvas: #ffffff;
+  --color-surface: #f7f8fa;
+  --color-surface-soft: #f2f3f5;
+  --color-hairline: #e5e7eb;
+  --color-hairline-soft: #eaecf0;
+  
+  --color-ink: #0a0a0a;
+  --color-ink-strong: #000000;
+  --color-charcoal: #222222;
+  --color-slate: #45515e;
+  --color-steel: #5f5f5f;
+  --color-stone: #8e8e93;
+  --color-muted: #a8aab2;
+  
+  --color-success-bg: #e8ffea;
+  --color-success-text: #1ba673;
+  --color-footer-bg: #0a0a0a;
+  
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  
+  --radius-hero: 32px;
+  --radius-xxxl: 24px;
+  --radius-xxl: 20px;
+  --radius-xl: 16px;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
+  --radius-xs: 4px;
+  
+  --animate-glow: glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 15px rgba(20, 86, 240, 0.05);
+  }
+  100% {
+    box-shadow: 0 0 30px rgba(20, 86, 240, 0.25);
+  }
+}
+
+/* Base styles and defaults */
+html, body {
+  background-color: #ffffff;
+  color: #0a0a0a;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* Custom premium classes according to MiniMax system */
+.hero-display-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 80px;
+  font-weight: 600;
+  line-height: 1.10;
+  letter-spacing: -2px;
+}
+
+.display-lg-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.10;
+  letter-spacing: -1.5px;
+}
+
+.heading-lg-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.20;
+  letter-spacing: -1px;
+}
+
+.heading-md-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+
+.heading-sm-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.30;
+}
+
+.card-title-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.40;
+}
+
+.subtitle-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.50;
+}
+
+.body-md-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.50;
+}
+
+.body-sm-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.50;
+}
+
+.body-sm-medium-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.50;
+}
+
+.caption-bold-typography {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.50;
+}
+
+/* Custom premium scrollbar for code blocks & tables */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #eaecf0;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d0d5dd;
+}
