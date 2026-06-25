@@ -55,12 +55,107 @@
   }
 }
 
+@keyframes text-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes card-lift-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes media-soft-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* Base styles and defaults */
 html, body {
   background-color: #ffffff;
   color: #0a0a0a;
   font-family: var(--font-dm-sans), system-ui, sans-serif;
   scroll-behavior: smooth;
+}
+
+.page-motion section :where(h1, h2) {
+  animation: text-rise-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.page-motion section :where(p) {
+  animation: text-rise-in 700ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both;
+}
+
+.page-motion section :where(.hero-display-typography, .heading-md-typography, .heading-sm-typography) {
+  animation-delay: 40ms;
+}
+
+.page-motion section > div > span,
+.page-motion section > div > div > span {
+  animation: text-rise-in 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.page-motion section :where(article),
+.page-motion section .grid > div {
+  animation: card-lift-in 720ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+}
+
+.page-motion section :where(article:nth-child(2), .grid > div:nth-child(2)) {
+  animation-delay: 170ms;
+}
+
+.page-motion section :where(article:nth-child(3), .grid > div:nth-child(3)) {
+  animation-delay: 220ms;
+}
+
+.page-motion section :where(article:nth-child(4), .grid > div:nth-child(4)) {
+  animation-delay: 270ms;
+}
+
+.page-motion section :where(article:nth-child(5), .grid > div:nth-child(5)) {
+  animation-delay: 320ms;
+}
+
+.page-motion section :where(article:nth-child(6), .grid > div:nth-child(6)) {
+  animation-delay: 370ms;
+}
+
+.page-motion section :where(article:nth-child(n+7), .grid > div:nth-child(n+7)) {
+  animation-delay: 420ms;
+}
+
+.page-motion section :where(img, video, svg) {
+  animation: media-soft-in 760ms cubic-bezier(0.16, 1, 0.3, 1) 110ms both;
+}
+
+.page-motion section :where(a, button) {
+  animation: text-rise-in 620ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-motion section :where(h1, h2, p, article, img, video, svg, a, button),
+  .page-motion section > div > span,
+  .page-motion section > div > div > span {
+    animation: none;
+  }
 }
 
 /* Custom premium classes according to MiniMax system */

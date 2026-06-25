@@ -148,11 +148,6 @@ export default function Footer() {
           <div>
             &copy; {currentYear} Lashvae AI, Inc. All rights reserved.
           </div>
-          <div className="flex items-center gap-4">
-            <span>Enterprise SLA Certified</span>
-            <span className="h-1 w-1 rounded-full bg-[#a8aab2]"></span>
-            <span>System Status: 99.98%</span>
-          </div>
         </div>
 
       </div>

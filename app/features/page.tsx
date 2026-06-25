@@ -1,503 +1,327 @@
-'use client'
-
-import { useState } from 'react'
 import Link from 'next/link'
-import { 
-  Network, 
-  Database, 
-  BarChart3, 
-  BrainCircuit, 
-  FileText, 
-  CheckCircle2, 
-  GitFork
+import {
+  ArrowRight,
+  BarChart3,
+  CheckCircle2,
+  Gauge,
+  Inbox,
+  MessageCircle,
+  Repeat2,
+  ShieldCheck,
+  Smile,
+  Sparkles,
+  Target,
+  Zap,
 } from 'lucide-react'
 
-type TabId = 'reasoning' | 'builder' | 'knowledge' | 'analytics'
+type Feature = {
+  title: string
+  metric: string
+  metricLabel: string
+  description: string
+  accent: string
+  icon: React.ComponentType<{ className?: string }>
+  preview: React.ReactNode
+}
+
+const features: Feature[] = [
+  {
+    title: 'Real-Time Replies',
+    metric: '~3s',
+    metricLabel: 'avg response',
+    description: 'AI responds before your team sees the notification.',
+    accent: '#ff5530',
+    icon: Zap,
+    preview: (
+      <div className="rounded-xl bg-[#0a0a0a] p-4 text-white">
+        <div className="flex items-center justify-between text-[11px] text-[#a8aab2]">
+          <span>~3 seconds</span>
+          <span className="text-[#1ba673]">AI responded</span>
+        </div>
+        <div className="mt-4 rounded-lg bg-white/10 p-3 text-[13px]">
+          Hi there. I can help with that right now.
+        </div>
+        <div className="mt-3 text-[11px] text-[#a8aab2]">just now</div>
+      </div>
+    ),
+  },
+  {
+    title: 'Mood Detection',
+    metric: '97%',
+    metricLabel: 'accuracy',
+    description: 'Reads tone, urgency and emotion in every message.',
+    accent: '#ea5ec1',
+    icon: Smile,
+    preview: (
+      <div className="space-y-3">
+        {[
+          { label: 'Excited', value: '78%', width: '78%', color: '#1ba673' },
+          { label: 'Curious', value: '54%', width: '54%', color: '#1456f0' },
+          { label: 'Frustrated', value: '12%', width: '12%', color: '#ff5530' },
+        ].map((item) => (
+          <div key={item.label}>
+            <div className="mb-1 flex justify-between text-[12px] font-semibold text-[#45515e]">
+              <span>{item.label}</span>
+              <span>{item.value}</span>
+            </div>
+            <div className="h-2 rounded-full bg-[#f2f3f5]">
+              <div className="h-2 rounded-full" style={{ width: item.width, backgroundColor: item.color }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    title: 'Lead Scoring',
+    metric: '94',
+    metricLabel: '/ 100 hot leads',
+    description: 'Every conversation scored and routed instantly.',
+    accent: '#1456f0',
+    icon: Target,
+    preview: (
+      <div className="rounded-xl border border-[#e5e7eb] bg-[#f7f8fa] p-5 text-center">
+        <div className="text-[54px] font-bold leading-none text-[#0a0a0a]">94</div>
+        <div className="mt-1 text-[13px] font-bold text-[#45515e]">/100</div>
+        <div className="mx-auto mt-4 w-fit rounded-full bg-[#ff5530] px-3 py-1 text-[11px] font-bold text-white">
+          HOT LEAD
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: 'Unified Inbox',
+    metric: '6',
+    metricLabel: 'platforms - 1 view',
+    description: 'Zero tab switching. Every channel, one place.',
+    accent: '#4249c6',
+    icon: Inbox,
+    preview: (
+      <div className="rounded-xl border border-[#e5e7eb] bg-white p-4">
+        <div className="mb-3 text-[12px] font-bold text-[#1ba673]">All 6 connected - Live</div>
+        <div className="grid grid-cols-3 gap-2">
+          {['IG', 'WA', 'FB', 'TG', 'YT', 'GM'].map((item) => (
+            <div key={item} className="rounded-lg bg-[#f2f3f5] px-3 py-2 text-center text-[12px] font-bold text-[#45515e]">
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: 'Revenue Analytics',
+    metric: '$1,247',
+    metricLabel: 'avg/day',
+    description: 'Track which conversations close deals.',
+    accent: '#1ba673',
+    icon: BarChart3,
+    preview: (
+      <div className="rounded-xl bg-[#0a0a0a] p-4 text-white">
+        <div className="flex items-end justify-between">
+          <div>
+            <div className="text-[32px] font-bold">$1,247</div>
+            <div className="text-[12px] text-[#a8aab2]">avg/day</div>
+          </div>
+          <div className="rounded-full bg-[#e8ffea] px-3 py-1 text-[12px] font-bold text-[#1ba673]">
+            +34%
+          </div>
+        </div>
+        <div className="mt-4 flex h-16 items-end gap-2">
+          {[28, 44, 36, 58, 46, 64, 76].map((height) => (
+            <div key={height} className="flex-1 rounded-t bg-[#1ba673]" style={{ height: `${height}%` }} />
+          ))}
+        </div>
+        <div className="mt-2 text-[11px] text-[#a8aab2]">vs last week</div>
+      </div>
+    ),
+  },
+  {
+    title: 'Auto Follow-Ups',
+    metric: '3x',
+    metricLabel: 'more conversions',
+    description: 'Smart sequences re-engage silent leads.',
+    accent: '#7c3aed',
+    icon: Repeat2,
+    preview: (
+      <div className="space-y-2">
+        {[
+          ['D1', 'Thanks for reaching out!'],
+          ['D3', 'Following up on your interest...'],
+          ['D7', 'Last chance - deal closes soon!'],
+        ].map(([day, text]) => (
+          <div key={day} className="flex items-center gap-3 rounded-lg border border-[#e5e7eb] bg-white p-3">
+            <span className="rounded-md bg-[#f2f3f5] px-2 py-1 text-[11px] font-bold text-[#0a0a0a]">{day}</span>
+            <span className="text-[12px] text-[#45515e]">{text}</span>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    title: 'AI Persona',
+    metric: '100%',
+    metricLabel: 'on-brand replies',
+    description: 'Your voice. Your rules. Always.',
+    accent: '#229ed9',
+    icon: Sparkles,
+    preview: (
+      <div className="rounded-xl bg-[#f7f8fa] p-4">
+        <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[22px] shadow-sm">
+          🤖
+        </div>
+        <div className="rounded-r-xl rounded-bl-xl bg-white p-3 text-[13px] leading-relaxed text-[#222222] shadow-sm">
+          Hi Sarah! Our Starter plan is perfect for you. Quick walkthrough?
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: 'AI Safety',
+    metric: '0',
+    metricLabel: 'harmful replies ever',
+    description: 'Guardrails prevent off-brand or harmful responses.',
+    accent: '#0a0a0a',
+    icon: ShieldCheck,
+    preview: (
+      <div className="grid grid-cols-1 gap-2">
+        {['Toxic content blocked', 'Brand voice enforced', 'Zero harmful replies', 'GDPR compliant'].map((item) => (
+          <div key={item} className="flex items-center gap-2 rounded-lg bg-[#f7f8fa] p-3 text-[12px] font-semibold text-[#45515e]">
+            <CheckCircle2 className="h-4 w-4 text-[#1ba673]" />
+            {item}
+          </div>
+        ))}
+      </div>
+    ),
+  },
+]
 
 export default function FeaturesPage() {
-  const [activeTab, setActiveTab] = useState<TabId>('reasoning')
-
-  // Render tab content details
-  const renderTabShowcase = () => {
-    switch (activeTab) {
-      case 'reasoning':
-        return (
-          <div className="bg-[#0a0a0a] text-white rounded-xl p-6 font-mono text-[13px] shadow-lg border border-[#181e25] min-h-[380px] flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#181e25] pb-3">
-                <div className="flex items-center gap-2">
-                  <span className="h-3 w-3 rounded-full bg-[#ff5530] animate-pulse"></span>
-                  <span className="text-[#8e8e93] font-bold uppercase tracking-wider text-[11px]">Reasoning Chain Active</span>
-                </div>
-                <div className="text-[#8e8e93] text-[11px]">lashvae-reasoning-v1.0</div>
-              </div>
-              
-              <div className="space-y-3">
-                <div>
-                  <span className="text-[#ea5ec1] font-semibold">User:</span>
-                  <p className="text-[#a8aab2] mt-1">&ldquo;I received the wrong item in my package. Order #59392. Can I get a refund?&rdquo;</p>
-                </div>
-                
-                <div className="pl-4 border-l-2 border-[#ff5530]/30 space-y-2 mt-4">
-                  <p className="text-emerald-400 font-medium">[1/3] Query Intent Analysis</p>
-                  <p className="text-[#8e8e93]">Detected: Return / Refund Request. Sentiment: Frustrated. Order ID extracted: #59392.</p>
-                  
-                  <p className="text-emerald-400 font-medium">[2/3] Tool Invocation (Shopify API)</p>
-                  <p className="text-[#8e8e93]">Action: `shopify_get_order(order_id=&quot;59392&quot;)`</p>
-                  <p className="text-white/95 bg-white/5 p-2 rounded border border-white/10 mt-1">
-                    Response: &#123; status: &quot;Delivered&quot;, items: [&quot;AirPods Pro&quot;], paid: 249.00 &#125;
-                  </p>
-                  
-                  <p className="text-emerald-400 font-medium mt-3">[3/3] Policy Validation & Action Draft</p>
-                  <p className="text-[#8e8e93]">Matching refund guidelines. Zero-shot reasoning determines order is within 30-day window.</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="border-t border-[#181e25] pt-3 mt-4 flex items-center justify-between">
-              <span className="text-[#ff5530] font-semibold">Agent Action:</span>
-              <span className="bg-[#ff5530]/20 text-[#ff5530] font-bold text-[11px] px-2.5 py-1 rounded-full">
-                Drafted Refund Approval
-              </span>
-            </div>
-          </div>
-        )
-      case 'builder':
-        return (
-          <div className="bg-[#f7f8fa] border border-[#e5e7eb] rounded-xl p-6 shadow-md min-h-[380px] flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#e5e7eb] pb-3">
-                <span className="text-[#0a0a0a] font-bold text-[14px]">Visual Conversation Path</span>
-                <span className="text-xs bg-white border border-[#e5e7eb] px-2 py-0.5 rounded text-[#45515e] font-mono">canvas-v2</span>
-              </div>
-              
-              {/* Nodes mockup */}
-              <div className="space-y-6 relative py-4">
-                
-                {/* Trigger Node */}
-                <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 max-w-[280px] shadow-sm relative z-10">
-                  <div className="flex items-center gap-2 text-[#ea5ec1] font-semibold text-[12px]">
-                    <GitFork className="h-4 w-4" />
-                    <span>Trigger: Customer message received</span>
-                  </div>
-                </div>
-
-                {/* Arrow */}
-                <div className="h-6 w-0.5 bg-[#ea5ec1] absolute left-6 top-16 z-0"></div>
-
-                {/* Conditional Node */}
-                <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 max-w-[280px] shadow-sm ml-6 relative z-10">
-                  <div className="flex items-center justify-between text-[#222222] text-[12px] font-bold mb-1">
-                    <span>Reasoning check: Intent classification</span>
-                  </div>
-                  <div className="flex gap-2 mt-2">
-                    <span className="bg-[#e8ffea] text-[#1ba673] text-[10px] font-bold px-1.5 py-0.5 rounded">Refund</span>
-                    <span className="bg-blue-50 text-blue-600 text-[10px] font-bold px-1.5 py-0.5 rounded">Support</span>
-                  </div>
-                </div>
-                
-                {/* Dynamic path link */}
-                <div className="h-6 w-0.5 bg-[#ea5ec1] absolute left-12 top-36 z-0"></div>
-
-                {/* Action Node */}
-                <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 max-w-[280px] shadow-sm ml-12 relative z-10">
-                  <div className="flex items-center gap-2 text-emerald-600 font-semibold text-[12px]">
-                    <CheckCircle2 className="h-4 w-4" />
-                    <span>Action: Trigger automated refund workflow</span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div className="border-t border-[#e5e7eb] pt-3 text-[12px] text-[#8e8e93]">
-              Drag and drop nodes to enforce strict paths inside autonomous loops.
-            </div>
-          </div>
-        )
-      case 'knowledge':
-        return (
-          <div className="bg-white border border-[#e5e7eb] rounded-xl p-6 shadow-md min-h-[380px] flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#e5e7eb] pb-3">
-                <span className="text-[#0a0a0a] font-bold text-[14px]">Knowledge Base Hub</span>
-                <span className="text-xs bg-[#e8ffea] text-[#1ba673] font-bold px-2 py-0.5 rounded-full">Sync Complete</span>
-              </div>
-              
-              <div className="space-y-3">
-                {/* Doc Source 1 */}
-                <div className="flex items-center justify-between p-3 bg-[#f7f8fa] border border-[#e5e7eb] rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <FileText className="h-5 w-5 text-[#ff5530]" />
-                    <div className="text-left">
-                      <p className="text-[13px] font-bold text-[#0a0a0a]">Return_Guidelines_2026.pdf</p>
-                      <p className="text-[11px] text-[#8e8e93]">PDF manual • Updated 2h ago</p>
-                    </div>
-                  </div>
-                  <span className="text-xs font-semibold text-[#1ba673]">154 Pages parsed</span>
-                </div>
-
-                {/* Doc Source 2 */}
-                <div className="flex items-center justify-between p-3 bg-[#f7f8fa] border border-[#e5e7eb] rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Database className="h-5 w-5 text-[#1456f0]" />
-                    <div className="text-left">
-                      <p className="text-[13px] font-bold text-[#0a0a0a]">help.lashvae.ai/faq</p>
-                      <p className="text-[11px] text-[#8e8e93]">Zendesk Sync • Continuous fetch</p>
-                    </div>
-                  </div>
-                  <span className="text-xs font-semibold text-[#1ba673]">Active</span>
-                </div>
-
-                {/* Doc Source 3 */}
-                <div className="flex items-center justify-between p-3 bg-[#f7f8fa] border border-[#e5e7eb] rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <BrainCircuit className="h-5 w-5 text-[#ea5ec1]" />
-                    <div className="text-left">
-                      <p className="text-[13px] font-bold text-[#0a0a0a]">Notion Workspace: SOPs</p>
-                      <p className="text-[11px] text-[#8e8e93]">Enterprise Wiki • Live updates</p>
-                    </div>
-                  </div>
-                  <span className="text-xs font-semibold text-[#1ba673]">Synced</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-[#e8ffea] text-[#1ba673] p-3 rounded-lg text-[12px] font-medium mt-4">
-              Lashvae processes context changes dynamically. New uploads are index-ready in under 90s.
-            </div>
-          </div>
-        )
-      case 'analytics':
-        return (
-          <div className="bg-white border border-[#e5e7eb] rounded-xl p-6 shadow-md min-h-[380px] flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#e5e7eb] pb-3">
-                <span className="text-[#0a0a0a] font-bold text-[14px]">Live Dashboard Metrics</span>
-                <span className="text-xs bg-[#ff5530]/10 text-[#ff5530] font-bold px-2 py-0.5 rounded-full">Real-time</span>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="border border-[#e5e7eb] rounded-lg p-3.5 text-left bg-[#f7f8fa]">
-                  <span className="text-[11px] text-[#8e8e93] font-bold uppercase tracking-wider block">Deflection Rate</span>
-                  <span className="text-[26px] font-bold text-[#0a0a0a] tracking-tight block mt-1">45.8%</span>
-                  <span className="text-[10px] text-[#1ba673] font-semibold mt-1 block">▲ +3.2% vs last week</span>
-                </div>
-                
-                <div className="border border-[#e5e7eb] rounded-lg p-3.5 text-left bg-[#f7f8fa]">
-                  <span className="text-[11px] text-[#8e8e93] font-bold uppercase tracking-wider block">Cost Deflected</span>
-                  <span className="text-[26px] font-bold text-[#0a0a0a] tracking-tight block mt-1">$48,290</span>
-                  <span className="text-[10px] text-[#1ba673] font-semibold mt-1 block">▲ $12k saved monthly</span>
-                </div>
-              </div>
-
-              {/* Graphical Line chart mockup */}
-              <div className="border border-[#e5e7eb] rounded-lg p-4 bg-[#0a0a0a] text-white">
-                <div className="flex items-center justify-between text-xs text-[#8e8e93] pb-2 border-b border-[#181e25]">
-                  <span>Daily automated volume</span>
-                  <span>10,000+ chats</span>
-                </div>
-                {/* SVG mock graph */}
-                <svg viewBox="0 0 300 80" className="w-full mt-3 overflow-visible">
-                  <path 
-                    d="M0 60 Q 50 40 100 55 T 200 20 T 300 10" 
-                    fill="none" 
-                    stroke="url(#gradient-line)" 
-                    strokeWidth="3"
-                  />
-                  <defs>
-                    <linearGradient id="gradient-line" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#ff5530" />
-                      <stop offset="50%" stopColor="#ea5ec1" />
-                      <stop offset="100%" stopColor="#1456f0" />
-                    </linearGradient>
-                  </defs>
-                  <circle cx="200" cy="20" r="4" fill="#ea5ec1" />
-                  <line x1="200" y1="20" x2="200" y2="80" stroke="#ea5ec1" strokeWidth="1" strokeDasharray="3,3" />
-                </svg>
-              </div>
-            </div>
-
-            <div className="text-[12px] text-[#8e8e93] mt-2">
-              Metrics calculated via Gorgias APIs and deflecting webhooks.
-            </div>
-          </div>
-        )
-    }
-  }
-
   return (
-    <div className="flex flex-col w-full bg-white">
-      
-      {/* Feature Hero */}
-      <section className="py-20 px-6 sm:px-8 border-b border-[#eaecf0]">
-        <div className="mx-auto max-w-[1280px] text-center">
-          <span className="text-[12px] uppercase font-bold tracking-wider text-[#ff5530]">Advanced Tech Stack</span>
-          <h1 className="mt-4 text-[42px] sm:text-[56px] font-bold tracking-tight text-[#0a0a0a] leading-none">
-            Advanced AI infrastructure for modern support teams.
+    <div className="flex w-full flex-col bg-white">
+      <section className="relative overflow-hidden border-b border-[#b8325a] bg-[#D93668] px-6 py-20 text-white sm:px-8 sm:py-28">
+        <div className="absolute inset-0 opacity-40 pointer-events-none" style={{
+          backgroundImage: `
+            linear-gradient(rgba(255, 255, 255, 0.42) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.42) 1px, transparent 1px)
+          `,
+          backgroundSize: '280px 280px'
+        }} />
+        <div className="relative z-10 mx-auto max-w-[1280px] text-center">
+          <span className="inline-block rounded-full bg-white/10 px-3.5 py-1 text-[12px] font-bold uppercase tracking-wider text-white/90">
+            Lashvae AI Features
+          </span>
+          <h1 className="mx-auto mt-5 max-w-4xl text-[42px] font-bold leading-tight tracking-tight sm:text-[56px]">
+            Everything your AI inbox needs to reply, route, and convert.
           </h1>
-          <p className="mt-6 text-[16px] sm:text-[18px] text-[#45515e] max-w-2xl mx-auto leading-relaxed">
-            Deploy autonomous support models that think through steps, consult knowledge databases, and update Shopify/CRM data without manual intervention.
+          <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-white/90">
+            Lashvae understands emotion, scores intent, replies in your brand voice, and turns customer conversations into revenue signals.
           </p>
         </div>
       </section>
 
-      {/* Interactive Tabs Section */}
-      <section className="py-16 sm:py-24 px-6 sm:px-8 bg-white">
+      <section className="border-b border-[#eaecf0] px-6 py-10 sm:px-8">
+        <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-4 lg:grid-cols-4">
+          {features.slice(0, 4).map((feature) => (
+            <div key={feature.title} className="rounded-xl border border-[#e5e7eb] bg-white p-5 shadow-sm">
+              <div className="text-[32px] font-bold tracking-tight text-[#0a0a0a]">{feature.metric}</div>
+              <div className="mt-1 text-[12px] font-semibold text-[#8e8e93]">{feature.metricLabel}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-6 py-16 sm:px-8 sm:py-24">
         <div className="mx-auto max-w-[1280px]">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            
-            {/* Left Column: Switch buttons */}
-            <div className="lg:col-span-4 space-y-4">
-              <span className="text-[11px] font-bold tracking-wider uppercase text-[#8e8e93]">Interactive playground</span>
-              <h2 className="heading-sm-typography text-[#0a0a0a]">Experience Lashvae AI in action</h2>
-              
-              <div className="flex flex-col gap-2 mt-6">
-                
-                {/* Button 1 */}
-                <button
-                  onClick={() => setActiveTab('reasoning')}
-                  className={`w-full text-left p-4 rounded-xl transition-all border ${
-                    activeTab === 'reasoning'
-                      ? 'bg-white border-[#0a0a0a] shadow-sm text-[#0a0a0a]'
-                      : 'bg-transparent border-[#e5e7eb] text-[#45515e] hover:bg-[#f7f8fa]'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <BrainCircuit className={`h-5 w-5 ${activeTab === 'reasoning' ? 'text-[#ff5530]' : 'text-[#8e8e93]'}`} />
-                    <span className="text-[14px] font-bold">Agent Reasoning</span>
+          <div className="mb-12 max-w-2xl">
+            <span className="text-[12px] font-bold uppercase tracking-wider text-[#ff5530]">Core Capabilities</span>
+            <h2 className="heading-md-typography mt-2 text-[#0a0a0a]">Built for high-speed customer conversations.</h2>
+            <p className="mt-3 text-[15px] leading-relaxed text-[#45515e]">
+              These are the product features customers see every day inside Lashvae AI.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {features.map((feature) => {
+              const Icon = feature.icon
+
+              return (
+                <article key={feature.title} className="grid min-h-[360px] grid-cols-1 overflow-hidden rounded-xl border border-[#e5e7eb] bg-white shadow-sm lg:grid-cols-2">
+                  <div className="flex flex-col justify-between p-7">
+                    <div>
+                      <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full text-white" style={{ backgroundColor: feature.accent }}>
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <h3 className="text-[26px] font-bold tracking-tight text-[#0a0a0a]">{feature.title}</h3>
+                      <p className="mt-3 text-[14px] leading-relaxed text-[#45515e]">{feature.description}</p>
+                    </div>
+                    <div className="mt-8">
+                      <div className="text-[40px] font-bold leading-none tracking-tight text-[#0a0a0a]">{feature.metric}</div>
+                      <div className="mt-1 text-[12px] font-bold uppercase tracking-wider text-[#8e8e93]">{feature.metricLabel}</div>
+                    </div>
                   </div>
-                  <p className="text-[12px] text-[#8e8e93] mt-2 ml-8">
-                    View execution steps inside the model&apos;s scratchpad context.
-                  </p>
-                </button>
-
-                {/* Button 2 */}
-                <button
-                  onClick={() => setActiveTab('builder')}
-                  className={`w-full text-left p-4 rounded-xl transition-all border ${
-                    activeTab === 'builder'
-                      ? 'bg-white border-[#0a0a0a] shadow-sm text-[#0a0a0a]'
-                      : 'bg-transparent border-[#e5e7eb] text-[#45515e] hover:bg-[#f7f8fa]'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Network className={`h-5 w-5 ${activeTab === 'builder' ? 'text-[#ea5ec1]' : 'text-[#8e8e93]'}`} />
-                    <span className="text-[14px] font-bold">Visual Flow Builder</span>
+                  <div className="flex items-center bg-[#f7f8fa] p-6">
+                    <div className="w-full">{feature.preview}</div>
                   </div>
-                  <p className="text-[12px] text-[#8e8e93] mt-2 ml-8">
-                    Map custom routing paths and strict business guidelines.
-                  </p>
-                </button>
-
-                {/* Button 3 */}
-                <button
-                  onClick={() => setActiveTab('knowledge')}
-                  className={`w-full text-left p-4 rounded-xl transition-all border ${
-                    activeTab === 'knowledge'
-                      ? 'bg-white border-[#0a0a0a] shadow-sm text-[#0a0a0a]'
-                      : 'bg-transparent border-[#e5e7eb] text-[#45515e] hover:bg-[#f7f8fa]'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Database className={`h-5 w-5 ${activeTab === 'knowledge' ? 'text-[#1456f0]' : 'text-[#8e8e93]'}`} />
-                    <span className="text-[14px] font-bold">Knowledge Integration</span>
-                  </div>
-                  <p className="text-[12px] text-[#8e8e93] mt-2 ml-8">
-                    Ingest corporate directories, FAQs, documents, and Notion spaces.
-                  </p>
-                </button>
-
-                {/* Button 4 */}
-                <button
-                  onClick={() => setActiveTab('analytics')}
-                  className={`w-full text-left p-4 rounded-xl transition-all border ${
-                    activeTab === 'analytics'
-                      ? 'bg-white border-[#0a0a0a] shadow-sm text-[#0a0a0a]'
-                      : 'bg-transparent border-[#e5e7eb] text-[#45515e] hover:bg-[#f7f8fa]'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <BarChart3 className={`h-5 w-5 ${activeTab === 'analytics' ? 'text-[#a855f7]' : 'text-[#8e8e93]'}`} />
-                    <span className="text-[14px] font-bold">Analytics Dashboard</span>
-                  </div>
-                  <p className="text-[12px] text-[#8e8e93] mt-2 ml-8">
-                    Monitor costs deflected, deflection rates, and resolution loops.
-                  </p>
-                </button>
-
-              </div>
-            </div>
-
-            {/* Right Column: Stage Showcase */}
-            <div className="lg:col-span-8">
-              {renderTabShowcase()}
-            </div>
-
+                </article>
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* Visual Capabilities Showcase */}
-      <section className="py-16 sm:py-24 px-6 sm:px-8 bg-[#f7f8fa] border-t border-[#eaecf0]">
-        <div className="mx-auto max-w-[1280px] space-y-24">
-          
-          <div className="text-center max-w-xl mx-auto mb-8">
-            <span className="text-[12px] uppercase font-bold tracking-wider text-[#1456f0]">Under the Hood</span>
-            <h2 className="heading-md-typography mt-2 text-[#0a0a0a]">Capabilities Deep Dive</h2>
-          </div>
+      <section className="border-t border-[#eaecf0] bg-[#f7f8fa] px-6 py-16 sm:px-8 sm:py-24">
+        <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-10 lg:grid-cols-3">
+          {[
+            {
+              title: 'Understands first',
+              desc: 'Reads message content, customer mood, urgency, and conversation context before replying.',
+              icon: MessageCircle,
+            },
+            {
+              title: 'Routes intelligently',
+              desc: 'Scores leads, groups messages by intent, and escalates sensitive conversations to humans.',
+              icon: Gauge,
+            },
+            {
+              title: 'Improves revenue',
+              desc: 'Tracks follow-ups, conversion signals, and revenue impact across every connected channel.',
+              icon: BarChart3,
+            },
+          ].map((item) => {
+            const Icon = item.icon
 
-          {/* Row 1: Flow Builder */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-5">
-              <div className="h-10 w-10 bg-[#ff5530]/10 rounded-lg flex items-center justify-center text-[#ff5530]">
-                <GitFork className="h-5 w-5" />
-              </div>
-              <h3 className="heading-sm-typography text-[#0a0a0a]">Visual Flow Builder</h3>
-              <p className="text-[#45515e] text-[15px] leading-relaxed">
-                Design custom routing and business fallback channels. If a customer demands human handoffs or submits a complex warranty claim, Lashvae routes them along predefined branches. 
-              </p>
-              <ul className="space-y-2.5 pt-2">
-                <li className="flex items-center gap-2 text-[14px] text-[#222222]">
-                  <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
-                  <span>Interactive node editor with state tracking</span>
-                </li>
-                <li className="flex items-center gap-2 text-[14px] text-[#222222]">
-                  <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
-                  <span>Configurable fallback gates for human overrides</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="bg-white border border-[#e5e7eb] rounded-xl p-8 shadow-sm text-left">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="h-2 w-2 rounded-full bg-orange-500"></span>
-                <span className="text-xs font-semibold text-[#8e8e93] uppercase">Flow Editor Preview</span>
-              </div>
-              <div className="border border-[#e5e7eb] rounded-lg p-5 bg-[#f7f8fa] font-mono text-[12px] text-[#45515e]">
-                <p className="text-[#0a0a0a] font-bold">{"// Visual Flow JSON Structure"}</p>
-                <p className="mt-2 text-blue-600">&quot;step_1_intent&quot;: &quot;classify_issue&quot;,</p>
-                <p className="text-purple-600">&quot;fallback_rule&quot;: &quot;human_escalate&quot;,</p>
-                <p className="text-emerald-600">&quot;variables&quot;: [&quot;order_id&quot;, &quot;email&quot;],</p>
-                <p className="text-[#ff5530]">&quot;allowed_retry_count&quot;: 3</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Row 2: Context Training */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center md:flex-row-reverse">
-            <div className="md:order-2 space-y-5">
-              <div className="h-10 w-10 bg-[#ea5ec1]/10 rounded-lg flex items-center justify-center text-[#ea5ec1]">
-                <Database className="h-5 w-5" />
-              </div>
-              <h3 className="heading-sm-typography text-[#0a0a0a]">Context Training</h3>
-              <p className="text-[#45515e] text-[15px] leading-relaxed">
-                Connect your business knowledge in seconds. Upload PDFs, connect Help Center links, or link your team&apos;s Notion wiki directly. Lashvae parses and embeds this context window immediately.
-              </p>
-              <ul className="space-y-2.5 pt-2">
-                <li className="flex items-center gap-2 text-[14px] text-[#222222]">
-                  <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
-                  <span>Real-time vector synchronization</span>
-                </li>
-                <li className="flex items-center gap-2 text-[14px] text-[#222222]">
-                  <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
-                  <span>Accepts Notion, Zendesk, PDF, and direct URLs</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="md:order-1 bg-white border border-[#e5e7eb] rounded-xl p-8 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="h-2 w-2 rounded-full bg-pink-500"></span>
-                <span className="text-xs font-semibold text-[#8e8e93] uppercase">Context Upload Box</span>
-              </div>
-              <div className="border-2 border-dashed border-[#e5e7eb] rounded-lg p-8 flex flex-col items-center justify-center text-center">
-                <Database className="h-8 w-8 text-[#ea5ec1] mb-2 animate-bounce" />
-                <p className="text-[13px] font-bold text-[#0a0a0a]">Drop documents here</p>
-                <p className="text-[11px] text-[#8e8e93] mt-1">PDF, DOCX, TXT up to 50MB</p>
-                <button className="mt-4 rounded-full bg-[#0a0a0a] text-white px-4 py-1.5 text-[12px] font-semibold hover:bg-[#222222] transition-colors">
-                  Upload file
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Row 3: Analytics */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-5">
-              <div className="h-10 w-10 bg-[#1456f0]/10 rounded-lg flex items-center justify-center text-[#1456f0]">
-                <BarChart3 className="h-5 w-5" />
-              </div>
-              <h3 className="heading-sm-typography text-[#0a0a0a]">Detailed Analytics</h3>
-              <p className="text-[#45515e] text-[15px] leading-relaxed">
-                Stay on top of performance metrics. Track how many customer tickets were resolved autonomously, measure response latencies, and monitor support costs deflected dynamically.
-              </p>
-              <ul className="space-y-2.5 pt-2">
-                <li className="flex items-center gap-2 text-[14px] text-[#222222]">
-                  <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
-                  <span>Real-time webhook deflection callbacks</span>
-                </li>
-                <li className="flex items-center gap-2 text-[14px] text-[#222222]">
-                  <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
-                  <span>Complete CSAT satisfaction monitoring</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="bg-white border border-[#e5e7eb] rounded-xl p-8 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-                <span className="text-xs font-semibold text-[#8e8e93] uppercase">Metrics Deflection Overview</span>
-              </div>
-              <div className="space-y-3.5">
-                <div>
-                  <div className="flex justify-between text-xs font-semibold mb-1">
-                    <span>Automated resolution rate</span>
-                    <span className="text-blue-600 font-bold">78%</span>
-                  </div>
-                  <div className="w-full bg-[#f2f3f5] h-2 rounded-full overflow-hidden">
-                    <div className="bg-[#1456f0] h-2 rounded-full" style={{ width: '78%' }}></div>
-                  </div>
+            return (
+              <article key={item.title} className="rounded-xl border border-[#e5e7eb] bg-white p-7 shadow-sm">
+                <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-[#0a0a0a] text-white">
+                  <Icon className="h-5 w-5" />
                 </div>
-                <div>
-                  <div className="flex justify-between text-xs font-semibold mb-1">
-                    <span>CSAT Rating (out of 5)</span>
-                    <span className="text-pink-600 font-bold">4.82</span>
-                  </div>
-                  <div className="w-full bg-[#f2f3f5] h-2 rounded-full overflow-hidden">
-                    <div className="bg-[#ea5ec1] h-2 rounded-full" style={{ width: '96%' }}></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
+                <h3 className="text-[22px] font-bold tracking-tight text-[#0a0a0a]">{item.title}</h3>
+                <p className="mt-3 text-[14px] leading-relaxed text-[#45515e]">{item.desc}</p>
+              </article>
+            )
+          })}
         </div>
       </section>
 
-      {/* Page CTA strip */}
-      <section className="bg-white py-16 sm:py-24 px-6 sm:px-8 border-t border-[#eaecf0]">
-        <div className="mx-auto max-w-[1280px]">
-          <div className="bg-[#0a0a0a] text-white rounded-hero px-8 py-16 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent)] pointer-events-none"></div>
-            <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center">
-              <h2 className="text-[28px] sm:text-[36px] font-bold tracking-tight">Ready to deploy?</h2>
-              <p className="text-[#a8aab2] text-[14px] mt-3">
-                Train agents on your corporate data in minutes. No complex setups or long-term commitments required.
-              </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
-                <Link href="/pricing" className="rounded-full bg-white text-[#0a0a0a] px-6 py-3 font-semibold text-[14px] hover:bg-white/95 text-center">
-                  Get Started Free
-                </Link>
-                <Link href="/company#contact" className="rounded-full border border-white/20 bg-white/10 text-white px-6 py-3 font-semibold text-[14px] hover:bg-white/20 text-center">
-                  Talk to Sales
-                </Link>
-              </div>
+      <section className="bg-white px-6 py-16 sm:px-8 sm:py-24">
+        <div className="mx-auto max-w-[1280px] rounded-[32px] bg-[#0a0a0a] px-8 py-16 text-center text-white">
+          <div className="mx-auto flex max-w-xl flex-col items-center">
+            <h2 className="text-[28px] font-bold tracking-tight sm:text-[40px]">Ready to let Lashvae answer first?</h2>
+            <p className="mt-4 text-[14px] leading-relaxed text-[#a8aab2]">
+              Start with real-time replies, mood detection, lead scoring, and safe on-brand automation from day one.
+            </p>
+            <div className="mt-8 flex w-full max-w-md flex-col justify-center gap-4 sm:flex-row">
+              <Link href="/pricing" className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-[14px] font-semibold text-[#0a0a0a] hover:bg-white/95">
+                Start Free <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/channels" className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 py-3.5 text-[14px] font-semibold text-white hover:bg-white/20">
+                See Channels
+              </Link>
             </div>
           </div>
         </div>
       </section>
-
     </div>
   )
 }

@@ -3,6 +3,45 @@ import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import AnimatedStats from './components/AnimatedStats'
 
+const homeChannels = [
+  {
+    id: 'instagram',
+    name: 'Instagram',
+    tagline: 'Turn followers into qualified customer conversations.',
+    logo: '/images/brand-logo/instagram.png',
+  },
+  {
+    id: 'whatsapp',
+    name: 'WhatsApp',
+    tagline: 'Transform high-intent chats into loyal customers.',
+    logo: '/images/brand-logo/whatsapp.png',
+  },
+  {
+    id: 'facebook',
+    name: 'Messenger',
+    tagline: 'Auto-respond to inbound messages before leads go cold.',
+    logo: '/images/brand-logo/facebook.png',
+  },
+  {
+    id: 'telegram',
+    name: 'Telegram',
+    tagline: 'Automate group, bot, and channel conversations.',
+    logo: '/images/brand-logo/telegram.png',
+  },
+  {
+    id: 'youtube',
+    name: 'YouTube',
+    tagline: 'Convert comments and creator engagement into demand.',
+    logo: '/images/brand-logo/youtube.png',
+  },
+  {
+    id: 'googlemaps',
+    name: 'Google Maps',
+    tagline: 'Reply to reviews and local questions instantly.',
+    logo: '/images/brand-logo/google-map.png',
+  },
+]
+
 export default function Home() {
   return (
     <div className="flex flex-col w-full bg-white">
@@ -23,7 +62,7 @@ export default function Home() {
                 className="h-4 w-auto object-contain"
               />
               <span className="h-3.5 w-px bg-[#e5e7eb]"></span>
-              Reviewed by Meta &mdash; Official Partner
+              Meta Official Partner
             </div>
 
             <h1 className="hero-display-typography text-[#0a0a0a] text-[48px] sm:text-[56px] lg:text-[72px] leading-tight">
@@ -43,7 +82,7 @@ export default function Home() {
                 id="hero-cta-primary"
                 className="rounded-full bg-[#0a0a0a] px-8 py-4 text-[15px] font-semibold text-white hover:bg-[#222222] transition-all inline-flex items-center justify-center gap-2"
               >
-                Start Free — 14 Days <ArrowRight className="h-4 w-4" />
+                Start Free 14 Days <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/features"
@@ -78,31 +117,64 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. Platform Strip */}
-      <section className="border-y border-[#eaecf0] bg-[#f7f8fa] py-8 px-6 sm:px-8">
-        <div className="mx-auto max-w-[1280px]">
-          <p className="text-center text-[11px] font-bold tracking-widest uppercase text-[#8e8e93] mb-6">6 Live Platforms — All your customers. One reply engine.</p>
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-            {[
-              { name: 'Instagram', logo: '/images/brand-logo/instagram.png' },
-              { name: 'WhatsApp', logo: '/images/brand-logo/whatsapp.png' },
-              { name: 'Facebook', logo: '/images/brand-logo/facebook.png' },
-              { name: 'Telegram', logo: '/images/brand-logo/telegram.png' },
-              { name: 'YouTube', logo: '/images/brand-logo/youtube.png' },
-              { name: 'Google Maps', logo: '/images/brand-logo/google-map.png' },
-            ].map((p) => (
-              <div key={p.name} className="flex items-center gap-2 bg-white border border-[#e5e7eb] rounded-full px-4 py-2 shadow-sm">
-                <Image src={p.logo} alt={p.name} width={20} height={20} className="h-5 w-5 object-contain" />
-                <span className="text-[13px] font-semibold text-[#222222]">{p.name}</span>
-              </div>
+      {/* 3. Channel Matrix */}
+      <section className="relative overflow-hidden py-16 sm:py-24 px-6 sm:px-8 bg-[#4249C6] border-b border-[#343ba7]">
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 opacity-40 pointer-events-none" style={{
+          backgroundImage: `
+            linear-gradient(rgba(255, 255, 255, 0.42) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.42) 1px, transparent 1px)
+          `,
+          backgroundSize: '280px 280px'
+        }}></div>
+        <div className="relative z-10 mx-auto max-w-[1280px]">
+          <div className="mb-12 max-w-4xl">
+            <h2 className="text-[42px] sm:text-[56px] lg:text-[64px] font-bold tracking-tight leading-none text-white">
+              Business automation made easy
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {homeChannels.map((channel) => (
+              <article
+                key={channel.id}
+                className="min-h-[220px] md:min-h-[252px] bg-white p-7 sm:p-8 flex flex-col justify-between text-left shadow-sm"
+              >
+                <div>
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 flex items-center justify-center shrink-0">
+                      <Image
+                        src={channel.logo}
+                        alt={channel.name}
+                        width={28}
+                        height={28}
+                        className="h-7 w-7 object-contain"
+                      />
+                    </div>
+                    <h3 className="text-[28px] lg:text-[34px] font-bold tracking-tight text-[#0a0a0a] leading-none">
+                      {channel.name}
+                    </h3>
+                  </div>
+                  <p className="mt-5 text-[17px] lg:text-[19px] leading-snug text-[#0a0a0a] max-w-[310px]">
+                    {channel.tagline}
+                  </p>
+                </div>
+
+                <Link
+                  href={`/channels/${channel.id}`}
+                  className="mt-10 inline-flex w-fit items-center gap-3 border-b border-[#0a0a0a] pb-0.5 text-[13px] font-medium tracking-[0.08em] uppercase text-[#0a0a0a] hover:gap-4 transition-all"
+                >
+                  Learn More <ArrowRight className="h-5 w-5" />
+                </Link>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 3. Stats Row */}
-      <section className="py-16 sm:py-20 px-6 sm:px-8 bg-white border-b border-[#eaecf0]">
-        <div className="mx-auto max-w-[1280px]">
+      {/* 5. Stats Row */}
+      <section className="relative overflow-hidden py-16 sm:py-20 px-6 sm:px-8">
+        <div className="relative z-10 mx-auto max-w-[1280px]">
           <AnimatedStats />
         </div>
       </section>
@@ -111,7 +183,6 @@ export default function Home() {
       <section className="py-16 sm:py-24 px-6 sm:px-8 bg-[#f7f8fa]">
         <div className="mx-auto max-w-[1280px]">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-[12px] uppercase font-bold tracking-wider text-[#ff5530]">11 Capabilities</span>
             <h2 className="heading-md-typography mt-2 text-[#0a0a0a]">Built for revenue. Not just replies.</h2>
             <p className="text-[#45515e] mt-3 text-[15px]">Every capability designed around one outcome: turning customer messages into closed deals.</p>
           </div>
@@ -172,17 +243,29 @@ export default function Home() {
                   </div>
                   <p className="text-[13px] text-[#45515e] leading-relaxed">{f.desc}</p>
                 </div>
-                <div className="border-t border-[#f2f3f5] p-6 flex justify-between items-center text-[12px] text-[#8e8e93]">
-                  <span>Learn more</span>
-                  <span className="font-semibold text-[#0a0a0a] inline-flex items-center gap-0.5 hover:underline cursor-pointer">Explore <ArrowRight className="h-3 w-3" /></span>
-                </div>
               </article>
             ))}
+          </div>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="https://app.lashvae.com/login?signup=true"
+              className="rounded-full bg-[#0a0a0a] px-8 py-3.5 text-[14px] font-semibold text-white hover:bg-[#222222] transition-all inline-flex items-center justify-center gap-2"
+            >
+              Start Free <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/features"
+              className="rounded-full border border-[#0a0a0a] px-8 py-3.5 text-[14px] font-semibold text-[#0a0a0a] hover:bg-[#f2f3f5] transition-all text-center"
+            >
+              See Capabilities
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* 5. The Business Case */}
+      
+
+      {/* 6. The Business Case */}
       <section className="py-16 sm:py-24 px-6 sm:px-8 bg-white border-t border-[#eaecf0]">
         <div className="mx-auto max-w-[1280px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -225,7 +308,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. CTA Strip */}
+      {/* 7. CTA Strip */}
       <section className="bg-white py-16 sm:py-24 px-6 sm:px-8 border-t border-[#eaecf0]">
         <div className="mx-auto max-w-[1280px]">
           <div className="bg-[#0a0a0a] text-white rounded-[32px] px-8 py-16 text-center relative overflow-hidden">
@@ -235,7 +318,7 @@ export default function Home() {
                 Ready when you are
               </span>
               <h2 className="text-[28px] sm:text-[40px] font-bold tracking-tight leading-tight">
-                First reply: under 1 second.<br />Total setup: under 5 minutes.
+                First reply: ~3 Seconds.<br />Total setup: 5 minutes.
               </h2>
               <p className="text-[#a8aab2] text-[14px] mt-4">
                 Start your free 14-day trial. No credit card. No commitment. Cancel anytime.
