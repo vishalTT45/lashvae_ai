@@ -13,9 +13,12 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Lashvae AI — Customer Operations, Solved by AI",
+  title: "Lashvae - AI Powered Omnichannel Inbox | Reply in ~3 Seconds",
   description: "Advanced AI infrastructure for modern support teams. Automate chat, ticket resolving, and sales across multiple channels.",
   keywords: ["AI customer service", "conversational AI", "support automation", "omni-channel chat"],
+  icons: {
+    icon: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -28,7 +31,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-white text-[#0a0a0a]">
         <PromoBanner />
         <Header />
-        <main className="flex-grow flex flex-col">
+        <main className="page-motion flex-grow flex flex-col">
           {children}
         </main>
         <Footer />

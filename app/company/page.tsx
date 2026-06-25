@@ -29,9 +29,17 @@ export default function CompanyPage() {
     <div className="flex flex-col w-full bg-white">
       
       {/* 1. About Us Section (Editorial Layout) */}
-      <section id="about" className="py-20 px-6 sm:px-8 border-b border-[#eaecf0] bg-white scroll-mt-16">
-        <div className="mx-auto max-w-[960px] text-center">
-          <span className="text-[12px] uppercase font-bold tracking-wider text-[#ff5530]">Our Purpose</span>
+      <section id="about" className="relative overflow-hidden py-20 px-6 sm:px-8 border-b border-[#eaecf0] bg-[#EDF2ED] scroll-mt-16">
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 opacity-30 pointer-events-none" style={{
+          backgroundImage: `
+            linear-gradient(rgba(10, 10, 10, 0.28) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(10, 10, 10, 0.28) 1px, transparent 1px)
+          `,
+          backgroundSize: '280px 280px'
+        }}></div>
+        <div className="mx-auto max-w-[960px] text-center relative z-10">
+          <span className="text-[12px] uppercase font-bold tracking-wider text-[#0a0a0a]">Our Purpose</span>
           
           <blockquote className="mt-8 text-[28px] sm:text-[36px] lg:text-[40px] font-semibold text-[#0a0a0a] leading-snug tracking-tight text-center max-w-4xl mx-auto italic">
             &ldquo;We build autonomous systems to solve repetitive customer operations, liberating human ingenuity to focus on creative, high-impact challenges.&rdquo;
@@ -63,88 +71,22 @@ export default function CompanyPage() {
             <p className="text-[#5f5f5f] mt-3">The latest thoughts from our engineering, design, and product departments.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            {/* Blog Post 1 */}
-            <article className="bg-white border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col justify-between hover:shadow-sm transition-shadow duration-200">
-              <div className="p-6 flex flex-col gap-5">
-                <div>
-                  <span className="bg-[#ff5530]/10 text-[#ff5530] text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-                    AI Research
-                  </span>
-                </div>
-                <h3 className="text-[18px] font-bold text-[#0a0a0a] leading-tight">
-                  Training Large Language Models for Zero-Shot Conversational Deflection
-                </h3>
-                <p className="text-[13px] text-[#5f5f5f] leading-relaxed">
-                  How we configure our custom embedding models to ingest technical support manuals and resolve refund logic without manual fine-tuning.
-                </p>
-              </div>
-              <div className="border-t border-[#f2f3f5] p-6 flex justify-between items-center text-[12px] text-[#8e8e93]">
-                <span>June 18, 2026 • 8 min read</span>
-                <span className="font-semibold text-[#0a0a0a] inline-flex items-center gap-0.5 hover:underline cursor-pointer">
-                  Read <ArrowUpRight className="h-3 w-3" />
-                </span>
-              </div>
-            </article>
-
-            {/* Blog Post 2 */}
-            <article className="bg-white border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col justify-between hover:shadow-sm transition-shadow duration-200">
-              <div className="p-6 flex flex-col gap-5">
-                <div>
-                  <span className="bg-blue-50 text-[#1456f0] text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-                    Product Update
-                  </span>
-                </div>
-                <h3 className="text-[18px] font-bold text-[#0a0a0a] leading-tight">
-                  Lashvae AI v1.0 Launch: Multi-Step Agent Reasoning Systems
-                </h3>
-                <p className="text-[13px] text-[#5f5f5f] leading-relaxed">
-                  Introducing our core updates: dynamic tool calling parameters, instant sync vectors, and official WhatsApp Business API endpoints.
-                </p>
-              </div>
-              <div className="border-t border-[#f2f3f5] p-6 flex justify-between items-center text-[12px] text-[#8e8e93]">
-                <span>May 29, 2026 • 5 min read</span>
-                <span className="font-semibold text-[#0a0a0a] inline-flex items-center gap-0.5 hover:underline cursor-pointer">
-                  Read <ArrowUpRight className="h-3 w-3" />
-                </span>
-              </div>
-            </article>
-
-            {/* Blog Post 3 */}
-            <article className="bg-white border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col justify-between hover:shadow-sm transition-shadow duration-200">
-              <div className="p-6 flex flex-col gap-5">
-                <div>
-                  <span className="bg-emerald-50 text-emerald-600 text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-                    Client Success
-                  </span>
-                </div>
-                <h3 className="text-[18px] font-bold text-[#0a0a0a] leading-tight">
-                  How Retailing Group Deflected 52% of Support Tickets in 14 Days
-                </h3>
-                <p className="text-[13px] text-[#5f5f5f] leading-relaxed">
-                  A case study detailing the deployment of Lashvae AI Web Chat widget and Shopify API connections across a 15-brand retail portfolio.
-                </p>
-              </div>
-              <div className="border-t border-[#f2f3f5] p-6 flex justify-between items-center text-[12px] text-[#8e8e93]">
-                <span>April 14, 2026 • 6 min read</span>
-                <span className="font-semibold text-[#0a0a0a] inline-flex items-center gap-0.5 hover:underline cursor-pointer">
-                  Read <ArrowUpRight className="h-3 w-3" />
-                </span>
-              </div>
-            </article>
-
+          <div className="border border-[#e5e7eb] rounded-xl overflow-hidden max-w-4xl">
+            <div className="p-10 flex flex-col items-center justify-center text-center bg-white">
+              <h3 className="text-[18px] font-bold text-[#0a0a0a]">Coming Soon</h3>
+              <p className="text-[14px] text-[#5f5f5f] mt-2">Exciting content is on the way. Stay tuned for our latest insights and research.</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* 3. Careers Section (Minimalist Listings) */}
-      <section id="careers" className="py-16 sm:py-24 px-6 sm:px-8 bg-white border-b border-[#eaecf0] scroll-mt-16">
-        <div className="mx-auto max-w-[1280px]">
+      <section id="careers" className="relative overflow-hidden py-16 sm:py-24 px-6 sm:px-8 border-b border-[#eaecf0] scroll-mt-16">
+        <div className="mx-auto max-w-[1280px] relative z-10">
           <div className="mb-12 max-w-2xl text-left">
-            <span className="text-[12px] uppercase font-bold tracking-wider text-[#1456f0]">Join the team</span>
+            <span className="text-[12px] uppercase font-bold tracking-wider text-[#0a0a0a]">Join the team</span>
             <h2 className="heading-md-typography mt-2 text-[#0a0a0a]">Open Engineering & Product Roles</h2>
-            <p className="text-[#5f5f5f] mt-3">We are looking for builders who want to re-architect global support pipelines.</p>
+            <p className="text-[#0a0a0a] mt-3">We are looking for builders who want to re-architect global support pipelines.</p>
           </div>
 
           <div className="border border-[#e5e7eb] rounded-xl overflow-hidden max-w-4xl">
@@ -167,22 +109,22 @@ export default function CompanyPage() {
                 <span className="text-[12px] uppercase font-bold tracking-wider text-[#ff5530]">Get in touch</span>
                 <h2 className="heading-md-typography mt-2 text-[#0a0a0a]">Start the conversation</h2>
                 <p className="text-[#5f5f5f] mt-3">
-                  Have questions about custom SLAs, high-volume pricing, or training vectors? Our enterprise sales team is here to help.
+                  We're available across multiple channels. Pick whichever works best for you.
                 </p>
               </div>
 
               <div className="space-y-4 text-[14px] text-[#45515e]">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 bg-[#f7f8fa] border border-[#e5e7eb] rounded-lg flex items-center justify-center text-[#ff5530]">
-                    <Mail className="h-4 w-4" />
-                  </div>
-                  <span>hello@lashvae.ai</span>
+                <div>
+                  <h3 className="text-[16px] font-bold text-[#0a0a0a]">Our Office</h3>
+                  <p className="text-[13px]">Office 18036, 182–184 High Street North, London, E6 2JA</p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 bg-[#f7f8fa] border border-[#e5e7eb] rounded-lg flex items-center justify-center text-[#ea5ec1]">
-                    <Layers className="h-4 w-4" />
-                  </div>
-                  <span>Enterprise integration support available 24/7</span>
+                <div>
+                  <h3 className="text-[16px] font-bold text-[#0a0a0a]">Email</h3>
+                  <p className="text-[13px]">dpo@lashvae.com</p>
+                </div>
+                <div>
+                  <h3 className="text-[16px] font-bold text-[#0a0a0a]">Business Hours</h3>
+                  <p className="text-[13px]">Mon – Fri: 9:00 AM – 7:00 PM<br />Sat: 10:00 AM – 4:00 PM</p>
                 </div>
               </div>
             </div>

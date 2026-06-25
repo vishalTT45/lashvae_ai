@@ -266,13 +266,15 @@ function CompareContent() {
       </div>
 
       {/* Comparison Grid Table Container */}
-      <div className="bg-white border border-[#e5e7eb] rounded-xl shadow-sm overflow-hidden mb-16">
+      <div className="relative bg-white border border-[#e5e7eb] rounded-xl shadow-sm overflow-hidden mb-16">
+        <div className="pointer-events-none absolute inset-y-0 left-1/3 z-10 hidden w-px bg-[#e5e7eb] md:block" />
+        <div className="pointer-events-none absolute inset-y-0 left-2/3 z-10 hidden w-px bg-[#e5e7eb] md:block" />
         
         {/* Table Headers */}
         <div className="grid grid-cols-12 bg-[#f7f8fa] border-b border-[#e5e7eb] p-4 text-[13px] font-bold text-[#5f5f5f] uppercase tracking-wider text-left">
           <div className="col-span-12 md:col-span-4">Capability / Feature</div>
-          <div className="hidden md:block md:col-span-4 border-l border-[#e5e7eb] pl-4">Lashvae AI</div>
-          <div className="hidden md:block md:col-span-4 border-l border-[#e5e7eb] pl-4">
+          <div className="hidden md:block md:col-span-4 pl-4">Lashvae AI</div>
+          <div className="hidden md:block md:col-span-4 pl-4">
             {currentData.name} <span className="text-[10px] font-medium text-[#8e8e93] normal-case">({currentData.tag})</span>
           </div>
         </div>
@@ -289,7 +291,7 @@ function CompareContent() {
               </div>
 
               {/* Lashvae Value (Col 2) */}
-              <div className="col-span-12 md:col-span-4 md:border-l border-[#eaecf0] md:pl-4 space-y-2">
+              <div className="col-span-12 md:col-span-4 md:pl-4 space-y-2">
                 <div className="md:hidden text-[11px] font-bold text-[#8e8e93] uppercase tracking-wider">Lashvae AI</div>
                 <div className="flex gap-2 items-start">
                   <span className="bg-[#e8ffea] text-[#1ba673] p-0.5 rounded-full mt-0.5 shrink-0">
@@ -305,7 +307,7 @@ function CompareContent() {
               </div>
 
               {/* Competitor Value (Col 3) */}
-              <div className="col-span-12 md:col-span-4 md:border-l border-[#eaecf0] md:pl-4 space-y-2">
+              <div className="col-span-12 md:col-span-4 md:pl-4 space-y-2">
                 <div className="md:hidden text-[11px] font-bold text-[#8e8e93] uppercase tracking-wider">{currentData.name}</div>
                 <div className="flex gap-2 items-start">
                   {row.competitorSupported ? (
@@ -361,13 +363,21 @@ export default function ComparePage() {
     <div className="flex flex-col w-full bg-white">
       
       {/* Hero Header */}
-      <section className="py-20 px-6 sm:px-8 border-b border-[#eaecf0] bg-white text-center">
-        <div className="mx-auto max-w-[1280px]">
-          <span className="text-[12px] uppercase font-bold tracking-wider text-[#1456f0]">Objective Comparison</span>
-          <h1 className="mt-4 text-[42px] sm:text-[56px] font-bold tracking-tight text-[#0a0a0a] leading-none">
+      <section className="relative overflow-hidden py-20 px-6 sm:px-8 border-b border-[#eaecf0] bg-[#007257] text-center text-white">
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 opacity-40 pointer-events-none" style={{
+          backgroundImage: `
+            linear-gradient(rgba(255, 255, 255, 0.42) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.42) 1px, transparent 1px)
+          `,
+          backgroundSize: '280px 280px'
+        }}></div>
+        <div className="mx-auto max-w-[1280px] relative z-10">
+          <span className="text-[12px] uppercase font-bold tracking-wider text-white/90 bg-white/10 px-3.5 py-1 rounded-full inline-block">Objective Comparison</span>
+          <h1 className="mt-4 text-[42px] sm:text-[56px] font-bold tracking-tight text-white leading-none">
             See why leading support teams choose Lashvae AI.
           </h1>
-          <p className="mt-6 text-[16px] sm:text-[18px] text-[#45515e] max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-6 text-[16px] sm:text-[18px] text-white/85 max-w-2xl mx-auto leading-relaxed">
             Legacy chat interfaces require manual flow charts and keyword triggers. Lashvae uses multi-step reasoning to automate tickets dynamically.
           </p>
         </div>
