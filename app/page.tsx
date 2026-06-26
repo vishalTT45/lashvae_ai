@@ -1,7 +1,7 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
-import AnimatedStats from './components/AnimatedStats'
+import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import AnimatedStats from './components/AnimatedStats';
 
 const homeChannels = [
   {
@@ -40,7 +40,7 @@ const homeChannels = [
     tagline: 'Reply to reviews and local questions instantly.',
     logo: '/images/brand-logo/google-map.png',
   },
-]
+];
 
 export default function Home() {
   return (
@@ -141,7 +141,7 @@ export default function Home() {
             {homeChannels.map((channel) => (
               <article
                 key={channel.id}
-                className='min-h-[220px] md:min-h-[252px] bg-white p-7 sm:p-8 flex flex-col justify-between text-left shadow-sm'
+                className='min-h-[220px] md:min-h-[252px] bg-white p-7 sm:p-8 flex flex-col justify-between text-left shadow-sm rounded-2xl'
               >
                 <div>
                   <div className='flex items-center gap-3'>
