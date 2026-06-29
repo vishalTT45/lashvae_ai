@@ -274,7 +274,7 @@ function CompareContent() {
         <div className="grid grid-cols-12 bg-[#f7f8fa] border-b border-[#e5e7eb] p-4 text-[13px] font-bold text-[#5f5f5f] uppercase tracking-wider text-left">
           <div className="col-span-12 md:col-span-4">Capability / Feature</div>
           <div className="hidden md:block md:col-span-4 pl-4">Lashvae AI</div>
-          <div className="hidden md:block md:col-span-4 pl-4">
+          <div className="hidden md:block md:col-span-4 pl-6">
             {currentData.name} <span className="text-[10px] font-medium text-[#8e8e93] normal-case">({currentData.tag})</span>
           </div>
         </div>
@@ -307,7 +307,7 @@ function CompareContent() {
               </div>
 
               {/* Competitor Value (Col 3) */}
-              <div className="col-span-12 md:col-span-4 md:pl-4 space-y-2">
+              <div className="col-span-12 md:col-span-4 md:pl-8 space-y-2">
                 <div className="md:hidden text-[11px] font-bold text-[#8e8e93] uppercase tracking-wider">{currentData.name}</div>
                 <div className="flex gap-2 items-start">
                   {row.competitorSupported ? (
