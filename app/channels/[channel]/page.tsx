@@ -119,21 +119,22 @@ export default async function ChannelProductPage({ params }: ChannelPageProps) {
           <div className='lg:col-span-5'>
             <div className='rounded-2xl border border-white/20 bg-white/15 p-6 shadow-2xl backdrop-blur'>
               <div className='flex items-center justify-between gap-5'>
-                <div>
-                  <div className='text-[56px] font-bold leading-none tracking-tight text-white'>
+                <div className='min-w-0'>
+                  <div className='text-[42px] font-bold leading-none tracking-tight text-white sm:text-[56px]'>
                     {product.statValue}
                   </div>
                   <div className='mt-2 text-[14px] font-semibold text-white/85'>
                     {product.statLabel}
                   </div>
                 </div>
-                <div className='flex h-20 w-20 items-center justify-center rounded-2xl bg-white'>
+
+                <div className='flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white sm:h-20 sm:w-20'>
                   <Image
                     src={product.logo}
                     alt=''
                     width={44}
                     height={44}
-                    className='h-11 w-11 object-contain'
+                    className='h-9 w-9 object-contain sm:h-11 sm:w-11'
                   />
                 </div>
               </div>
