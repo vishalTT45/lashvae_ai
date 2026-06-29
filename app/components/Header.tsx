@@ -41,6 +41,14 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <header className='sticky top-0 z-50 w-full border-b border-[#eaecf0] bg-white/80 backdrop-blur-md'>
       <div className='mx-auto flex h-16 max-w-[1280px] items-center justify-between px-6 sm:px-8'>
@@ -359,7 +367,7 @@ export default function Header() {
             </Link>
 
             <div className='py-2 border-b border-[#f2f3f5]'>
-              <span className='text-[12px] font-semibold text-[#8e8e93] uppercase tracking-wider'>
+              <span className='block text-[16px] font-medium text-[#0a0a0a]'>
                 Compare
               </span>
               <div className='mt-2 pl-4 flex flex-col gap-3'>
@@ -395,7 +403,7 @@ export default function Header() {
             </div>
 
             <div className='py-2 border-b border-[#f2f3f5]'>
-              <span className='text-[12px] font-semibold text-[#8e8e93] uppercase tracking-wider'>
+              <span className='block text-[16px] font-medium text-[#0a0a0a]'>
                 Company
               </span>
               <div className='mt-2 pl-4 flex flex-col gap-3'>

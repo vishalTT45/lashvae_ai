@@ -4,6 +4,7 @@ import "./globals.css";
 import PromoBanner from "./components/PromoBanner";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import PageMotion from "./components/PageMotion";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -29,9 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSans.variable} font-sans h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-white text-[#0a0a0a]">
+        <PageMotion />
         <PromoBanner />
         <Header />
-        <main className="page-motion flex-grow flex flex-col">
+        <main className="flex-grow flex flex-col">
           {children}
         </main>
         <Footer />
