@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   ArrowRight,
   BarChart3,
@@ -20,6 +21,7 @@ type Feature = {
   metricLabel: string
   description: string
   accent: string
+  image: string
   icon: React.ComponentType<{ className?: string }>
   preview: React.ReactNode
 }
@@ -29,8 +31,9 @@ const features: Feature[] = [
     title: 'Real-Time Replies',
     metric: '~3s',
     metricLabel: 'avg response',
-    description: 'AI responds before your team sees the notification.',
+    description: 'AI responds before your team sees the notification, with an average response time of ~3 seconds and replies marked as handled just now. Customers get instant answers at any hour, while your team only steps in when the conversation truly needs human judgment.',
     accent: '#ff5530',
+    image: '/images/features-page/real_time_replies_art_v2.png',
     icon: Zap,
     preview: (
       <div className="rounded-xl bg-[#0a0a0a] p-4 text-white">
@@ -49,8 +52,9 @@ const features: Feature[] = [
     title: 'Mood Detection',
     metric: '97%',
     metricLabel: 'accuracy',
-    description: 'Reads tone, urgency and emotion in every message.',
+    description: 'Reads tone, urgency, and emotion in every message with 97% accuracy, including signals like excited, curious, and frustrated. Lashvae helps your team understand the emotional state behind each conversation before they reply or escalate.',
     accent: '#ea5ec1',
+    image: '/images/features-page/mood_detection_art.png',
     icon: Smile,
     preview: (
       <div className="space-y-3">
@@ -76,8 +80,9 @@ const features: Feature[] = [
     title: 'Lead Scoring',
     metric: '94',
     metricLabel: '/ 100 hot leads',
-    description: 'Every conversation scored and routed instantly.',
+    description: 'Every conversation is scored and routed instantly, with hot leads highlighted around 94/100 so your team knows who to prioritize. Buying intent, urgency, and context are combined into a simple score your sales team can act on quickly.',
     accent: '#1456f0',
+    image: '/images/features-page/lead_scoring_art.png',
     icon: Target,
     preview: (
       <div className="rounded-xl border border-[#e5e7eb] bg-[#f7f8fa] p-5 text-center">
@@ -93,8 +98,9 @@ const features: Feature[] = [
     title: 'Unified Inbox',
     metric: '6',
     metricLabel: 'platforms - 1 view',
-    description: 'Zero tab switching. Every channel, one place.',
+    description: 'Zero tab switching across 6 platforms in one live view, so Instagram, WhatsApp, Facebook, Telegram, YouTube, and Google Maps stay connected. Every customer thread is organized in one workspace with status, intent, and follow-up context visible.',
     accent: '#4249c6',
+    image: '/images/features-page/unified_inbox_art.png',
     icon: Inbox,
     preview: (
       <div className="rounded-xl border border-[#e5e7eb] bg-white p-4">
@@ -113,8 +119,9 @@ const features: Feature[] = [
     title: 'Revenue Analytics',
     metric: '$1,247',
     metricLabel: 'avg/day',
-    description: 'Track which conversations close deals.',
+    description: 'Track which conversations close deals, including revenue signals like $1,247 average per day and +34% lift versus last week. See which channels, replies, campaigns, and follow-ups are creating pipeline instead of guessing from scattered inbox data.',
     accent: '#1ba673',
+    image: '/images/features-page/revenue_analytics_art.png',
     icon: BarChart3,
     preview: (
       <div className="rounded-xl bg-[#0a0a0a] p-4 text-white">
@@ -140,8 +147,9 @@ const features: Feature[] = [
     title: 'Auto Follow-Ups',
     metric: '3x',
     metricLabel: 'more conversions',
-    description: 'Smart sequences re-engage silent leads.',
+    description: 'Smart sequences re-engage silent leads with Day 1, Day 3, and Day 7 follow-ups designed to drive 3x more conversions. Lashvae keeps the conversation warm without sounding repetitive, pushy, or disconnected from the original message.',
     accent: '#7c3aed',
+    image: '/images/features-page/auto_followups_art.png',
     icon: Repeat2,
     preview: (
       <div className="space-y-2">
@@ -162,8 +170,9 @@ const features: Feature[] = [
     title: 'AI Persona',
     metric: '100%',
     metricLabel: 'on-brand replies',
-    description: 'Your voice. Your rules. Always.',
+    description: 'Your voice, your rules, always. Lashvae keeps replies 100% on-brand, from quick plan recommendations to friendly walkthrough prompts. You can define tone, offers, boundaries, and escalation rules so automation still feels like your business.',
     accent: '#229ed9',
+    image: '/images/features-page/ai_persona_art.png',
     icon: Sparkles,
     preview: (
       <div className="rounded-xl bg-[#f7f8fa] p-4">
@@ -180,8 +189,9 @@ const features: Feature[] = [
     title: 'AI Safety',
     metric: '0',
     metricLabel: 'harmful replies ever',
-    description: 'Guardrails prevent off-brand or harmful responses.',
+    description: 'Guardrails prevent off-brand or harmful responses with toxic content blocking, brand voice enforcement, zero harmful replies, and GDPR compliance. Sensitive messages are handled carefully, and uncertain cases are routed to a human before the brand is exposed.',
     accent: '#0a0a0a',
+    image: '/images/features-page/ai_safety_art.png',
     icon: ShieldCheck,
     preview: (
       <div className="grid grid-cols-1 gap-2">
@@ -220,18 +230,7 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      <section className="border-b border-[#eaecf0] px-6 py-10 sm:px-8">
-        <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-4 lg:grid-cols-4">
-          {features.slice(0, 4).map((feature) => (
-            <div key={feature.title} className="rounded-xl border border-[#e5e7eb] bg-white p-5 shadow-sm">
-              <div className="text-[32px] font-bold tracking-tight text-[#0a0a0a]">{feature.metric}</div>
-              <div className="mt-1 text-[12px] font-semibold text-[#8e8e93]">{feature.metricLabel}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-6 py-16 sm:px-8 sm:py-24">
+      <section className="bg-[linear-gradient(135deg,#fbfcff_0%,#f8fbff_42%,#f1fbff_100%)] px-6 py-16 sm:px-8 sm:py-24">
         <div className="mx-auto max-w-[1280px]">
           <div className="mb-12 max-w-2xl">
             <span className="text-[12px] font-bold uppercase tracking-wider text-[#ff5530]">Core Capabilities</span>
@@ -241,31 +240,25 @@ export default function FeaturesPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {features.map((feature) => {
-              const Icon = feature.icon
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            {features.map((feature) => (
+              <article key={feature.title} className="group flex min-h-[520px] flex-col overflow-hidden rounded-[24px] border border-[#dfe4ea] bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(15,23,42,0.12)]">
+                <div className="relative flex h-[300px] shrink-0 items-center justify-start overflow-hidden bg-[#fbfcff] p-7 sm:p-8">
+                  <Image
+                    src={feature.image}
+                    alt=""
+                    width={480}
+                    height={260}
+                    className="h-full w-full rounded-[16px] object-cover object-center transition-transform duration-300 group-hover:scale-[1.03]"
+                  />
+                </div>
 
-              return (
-                <article key={feature.title} className="grid min-h-[360px] grid-cols-1 overflow-hidden rounded-xl border border-[#e5e7eb] bg-white shadow-sm lg:grid-cols-2">
-                  <div className="flex flex-col justify-between p-7">
-                    <div>
-                      <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full text-white" style={{ backgroundColor: feature.accent }}>
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <h3 className="text-[26px] font-bold tracking-tight text-[#0a0a0a]">{feature.title}</h3>
-                      <p className="mt-3 text-[14px] leading-relaxed text-[#45515e]">{feature.description}</p>
-                    </div>
-                    <div className="mt-8">
-                      <div className="text-[40px] font-bold leading-none tracking-tight text-[#0a0a0a]">{feature.metric}</div>
-                      <div className="mt-1 text-[12px] font-bold uppercase tracking-wider text-[#8e8e93]">{feature.metricLabel}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center bg-[#f7f8fa] p-6">
-                    <div className="w-full">{feature.preview}</div>
-                  </div>
-                </article>
-              )
-            })}
+                <div className="flex flex-1 flex-col justify-start p-7 sm:p-8">
+                  <h3 className="text-[22px] font-semibold tracking-tight text-[#0a0a0a]">{feature.title}</h3>
+                  <p className="mt-3 max-w-[520px] text-[15px] leading-relaxed text-[#45515e]">{feature.description}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>

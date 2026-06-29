@@ -198,63 +198,47 @@ export default function Home() {
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
             {[
               {
-                img: '/images/features/card_1_red_orange.svg',
-                tag: 'Realtime',
-                title: 'Real-Time Replies',
-                desc: 'AI responds in ~0.31 seconds — before your team sees the notification. 24/7, across every channel.',
-              },
+                img: '/images/features-page/real_time_replies_art_v2.png',
+                  tag: 'Realtime',
+                  title: 'Real-Time Replies',
+                  desc: 'AI responds in ~0.31 seconds — before your team sees the notification. 24/7, across every channel.',
+                },
+                {
+                  img: '/images/features-page/mood_detection_art.png',
+                  tag: 'Understanding',
+                  title: 'Mood Detection',
+                  desc: 'Reads tone, urgency, and emotion in every message with high sentiment accuracy.',
+                },
               {
-                img: '/images/features/card_2_blue_teal.svg',
-                tag: 'Understanding',
-                title: 'Mood Detection',
-                desc: 'Reads tone, urgency, and emotion in every message with high sentiment accuracy.',
-              },
-              {
-                img: '/images/features/card_3_purple_pink.svg',
+                img: '/images/features-page/lead_scoring_art.png',
                 tag: 'Scoring',
                 title: 'Lead Scoring',
                 desc: 'Every conversation scored and routed instantly. Hot buyers flagged before your team notices.',
               },
               {
-                img: '/images/features/card_4_green_lime.svg',
+                img: '/images/features-page/unified_inbox_art.png',
                 tag: 'Inbox',
                 title: 'Unified Inbox',
                 desc: 'All channels in one view. Zero tab-switching. Filter by intent, status, and lead score.',
               },
               {
-                img: '/images/features/card_5_charcoal_cyan.svg',
+                img: '/images/features-page/revenue_analytics_art.png',
                 tag: 'Analytics',
                 title: 'Revenue Analytics',
                 desc: 'Track which conversations turn into closed revenue. +34% deal close rate on average.',
               },
               {
-                img: '/images/features/card_6_slate_violet.svg',
+                img: '/images/features-page/auto_followups_art.png',
                 tag: 'Automation',
                 title: 'Auto Follow-Ups',
                 desc: 'Smart sequences re-engage every silent lead. Day 1, Day 3, Day 7 — timed perfectly, always.',
               },
               // removed two cards to keep a 3-up layout per request
             ].map((f) => (
-              <article
-                key={f.title}
-                className='bg-white border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col justify-between hover:shadow-sm transition-shadow duration-200'
-              >
-                <div className='w-full h-40 bg-white relative overflow-hidden'>
-                  <Image
-                    src={f.img}
-                    alt={f.title}
-                    width={480}
-                    height={160}
-                    className='object-cover w-full h-full'
-                  />
-                  <div className='absolute inset-0 bg-black/25' />
-                  <div className='absolute inset-0 flex items-center justify-center'>
-                    <h3
-                      className='text-white text-[18px] sm:text-[20px] md:text-[22px] font-bold leading-tight uppercase tracking-wide text-center'
-                      style={{ textShadow: '0 2px 8px rgba(0,0,0,0.65)' }}
-                    >
-                      {f.title}
-                    </h3>
+              <article key={f.title} className="bg-white border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col justify-between hover:shadow-sm transition-shadow duration-200">
+                <div className="w-full h-48 bg-[#fbfcff] relative overflow-hidden">
+                  <div className="h-full w-[112%] -translate-x-[6%]">
+                    <Image src={f.img} alt={f.title} width={480} height={240} className="object-cover w-full h-full" />
                   </div>
                 </div>
                 <div className='p-6 flex flex-col gap-4'>
@@ -263,9 +247,7 @@ export default function Home() {
                       {f.tag}
                     </span>
                   </div>
-                  <p className='text-[13px] text-[#45515e] leading-relaxed'>
-                    {f.desc}
-                  </p>
+                  <p className="text-[13px] text-[#45515e] leading-relaxed">{f.desc}</p>
                 </div>
               </article>
             ))}
