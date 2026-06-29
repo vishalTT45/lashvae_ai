@@ -275,7 +275,7 @@ export default function PricingPage() {
               </div>
 
               <Link
-                href='/company#contact'
+                href='https://app.lashvae.com/login?signup=true'
                 className='mt-8 w-full rounded-full bg-[#0a0a0a] text-white py-3 text-[14px] font-semibold hover:bg-[#222222] transition-colors text-center cursor-pointer shadow-md'
               >
                 Start 14-day Free Trial
