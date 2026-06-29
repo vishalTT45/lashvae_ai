@@ -99,7 +99,7 @@ export default function Header() {
 
               {channelsOpen && (
                 <div
-                  className='absolute left-0 mt-1 w-72 rounded-xl border border-[#e5e7eb] bg-white p-2 shadow-[0px_4px_16px_rgba(0,0,0,0.08)]'
+                  className='absolute left-0 mt-1 w-64 rounded-xl border border-[#e5e7eb] bg-white p-2 shadow-[0px_4px_16px_rgba(0,0,0,0.08)]'
                   onMouseLeave={() => setChannelsOpen(false)}
                 >
                   <div className='px-3 py-1.5 text-[11px] font-semibold tracking-wider text-[#8e8e93] uppercase'>
@@ -109,37 +109,31 @@ export default function Header() {
                     {
                       name: 'Instagram',
                       slug: 'instagram',
-                      icon: '/images/brand-logo/instagram.png',
                       desc: 'Turn followers into buyers',
                     },
                     {
                       name: 'WhatsApp',
                       slug: 'whatsapp',
-                      icon: '/images/brand-logo/whatsapp.png',
                       desc: 'Close deals in chat',
                     },
                     {
                       name: 'Facebook',
                       slug: 'facebook',
-                      icon: '/images/brand-logo/facebook.png',
                       desc: 'Own every touchpoint',
                     },
                     {
                       name: 'Telegram',
                       slug: 'telegram',
-                      icon: '/images/brand-logo/telegram.png',
                       desc: 'Automate & broadcast',
                     },
                     {
                       name: 'YouTube',
                       slug: 'youtube',
-                      icon: '/images/brand-logo/youtube.png',
                       desc: 'Monetise your audience',
                     },
                     {
                       name: 'Google Maps',
                       slug: 'google-maps',
-                      icon: '/images/brand-logo/google-map.png',
                       desc: 'Win the local game',
                     },
                   ].map((ch) => (
@@ -149,13 +143,6 @@ export default function Header() {
                       onClick={() => setChannelsOpen(false)}
                       className='flex items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] text-[#222222] transition-colors hover:bg-[#f7f8fa]'
                     >
-                      <Image
-                        src={ch.icon}
-                        alt={ch.name}
-                        width={24}
-                        height={24}
-                        className='h-6 w-6 object-contain'
-                      />
                       <div className='flex flex-col'>
                         <span className='font-medium'>{ch.name}</span>
                         <span className='text-[12px] text-[#8e8e93]'>

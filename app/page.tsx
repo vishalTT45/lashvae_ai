@@ -94,13 +94,13 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className='mt-8 flex flex-wrap items-center gap-6 text-[12px] text-[#8e8e93]'>
+            {/* <div className='mt-8 flex flex-wrap items-center gap-6 text-[12px] text-[#8e8e93]'>
               <span>14-day free trial</span>
               <span className='h-1 w-1 rounded-full bg-[#d0d5dd]'></span>
               <span>No credit card required</span>
               <span className='h-1 w-1 rounded-full bg-[#d0d5dd]'></span>
               <span>Easy setup</span>
-            </div>
+            </div> */}
           </div>
 
           {/* Right Content: Image */}
@@ -395,7 +395,7 @@ export default function Home() {
               </p>
               <div className='mt-8 flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md'>
                 <Link
-                  href='/pricing'
+                  href='https://app.lashvae.com/login?signup=true'
                   className='rounded-full bg-white text-[#0a0a0a] px-8 py-3.5 font-semibold text-[14px] hover:bg-white/95 text-center'
                 >
                   Start Free Trial
