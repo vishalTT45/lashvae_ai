@@ -153,7 +153,7 @@ export default function ChannelsPage() {
             {channels.map((ch) => (
               <article
                 key={ch.id}
-                className="min-h-[252px] bg-white border border-transparent p-7 sm:p-8 flex flex-col justify-between text-left shadow-sm"
+                className="min-h-[252px] bg-white border border-transparent p-7 sm:p-8 flex flex-col justify-between text-left shadow-sm rounded-2xl"
               >
                 <div>
                   <div className="flex items-center gap-3">
