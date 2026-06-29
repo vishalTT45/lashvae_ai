@@ -75,7 +75,7 @@ export const channelProducts: ChannelProduct[] = [
     statValue: '2.4k',
     statLabel: 'DMs handled daily',
     color: '#e1306c',
-    bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    bg: 'linear-gradient(135deg, #833AB4 0%, #C13584 35%, #E1306C 65%, #F77737 100%)',
     logo: '/images/brand-logo/instagram.png',
     heroCopy:
       'Automate DMs, comments, story replies, and lead routing while keeping your brand voice sharp.',
@@ -150,7 +150,7 @@ export const channelProducts: ChannelProduct[] = [
     statValue: 'Unlimited',
     statLabel: 'group members reached',
     color: '#229ed9',
-    bg: 'linear-gradient(135deg, #43e97b 0%, #096fca 100%)',
+    bg: 'linear-gradient(135deg, #2AABEE 0%, #229ED9 100%)',
     logo: '/images/brand-logo/telegram.png',
     heroCopy:
       'Run group, bot, broadcast, and support workflows with AI moderation and fast handoff.',
@@ -174,7 +174,7 @@ export const channelProducts: ChannelProduct[] = [
     statValue: '510',
     statLabel: 'comments replied daily',
     color: '#ff0000',
-    bg: 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)',
+    bg: 'linear-gradient(135deg, #FF0000 0%, #B00000 100%)',
     logo: '/images/brand-logo/youtube.png',
     heroCopy:
       'Respond to comments, surface buying intent, and turn viewers into leads without living in Studio.',
@@ -195,7 +195,7 @@ export const channelProducts: ChannelProduct[] = [
     statValue: '+31%',
     statLabel: 'rating lift on avg',
     color: '#4285f4',
-    bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    bg: 'linear-gradient(135deg, #4285F4 0%, #34A853 100%)',
     logo: '/images/brand-logo/google-map.png',
     heroCopy:
       'Manage reviews, Q&A, reputation, and local trust signals with consistent AI follow-through.',

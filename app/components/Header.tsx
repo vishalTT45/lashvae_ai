@@ -133,7 +133,7 @@ export default function Header() {
                     },
                     {
                       name: 'Google Maps',
-                      slug: 'google-maps',
+                      slug: 'googlemaps',
                       desc: 'Win the local game',
                     },
                   ].map((ch) => (
