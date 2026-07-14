@@ -73,9 +73,9 @@ export default function PricingPage() {
   );
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
-  const starterPrice = billingCycle === 'annually' ? 39 : 49;
-  const growthPrice = billingCycle === 'annually' ? 119 : 149;
-  const enterprisePrice = 399;
+  const starterPrice = billingCycle === 'annually' ? 190 : 19;
+  const growthPrice = billingCycle === 'annually' ? 590 : 59;
+  const enterprisePrice = billingCycle === 'annually' ? 1490 : 149;
 
   const toggleFAQ = (id: number) => {
     setExpandedId(expandedId === id ? null : id);
@@ -137,13 +137,13 @@ export default function PricingPage() {
 
             {/* Coral Badge Save 20% */}
             <span className='absolute -top-3.5 -right-16 bg-[#ff5530] text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded-full tracking-wide shadow-sm'>
-              Save 20%
+              Save 17%
             </span>
           </div>
 
           <p className='text-[12px] text-[#8e8e93] mt-3.5'>
             {billingCycle === 'annually'
-              ? 'Billed annually — save 20% vs monthly'
+              ? 'Billed annually — save 17% vs monthly'
               : 'Billed monthly — cancel anytime'}
           </p>
         </div>
@@ -173,9 +173,14 @@ export default function PricingPage() {
                     ${starterPrice}
                   </span>
                   <span className='text-[13px] text-[#8e8e93] font-semibold ml-1'>
-                    / month
+                  /{billingCycle==='annually'? "year":'month' }
                   </span>
                 </div>
+                  {billingCycle==="annually" &&  <div className='mt-6 flex items-baseline'>
+                  <span className='text-[13px] text-[#8e8e93] ml-1'>
+                  $16/month billed annually
+                  </span>
+                </div> }
 
                 <div className='border-t border-[#f2f3f5] pt-6 mt-6 space-y-4'>
                   <span className='text-[11px] font-bold uppercase text-[#0a0a0a] tracking-wider block'>
@@ -184,24 +189,30 @@ export default function PricingPage() {
                   <ul className='space-y-3 text-[13px] text-[#45515e]'>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Up to 3 platforms</span>
+                      <span>1,000 AI messages / month</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>2,000 messages / mo</span>
+                      <span>2 connected channels</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Basic AI replies</span>
+                      <span>1 team member</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Email support</span>
+                      <span>10 knowledge documents</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>1 user seat</span>
+                      <span>Website chat widget</span>
                     </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
+                      <span>Booking system</span>
+                    </li>
+
+                   
                   </ul>
                 </div>
               </div>
@@ -239,36 +250,44 @@ export default function PricingPage() {
                     ${growthPrice}
                   </span>
                   <span className='text-[13px] text-[#8e8e93] font-semibold ml-1'>
-                    / month
+                    /{billingCycle==='annually'? "year":'month' }
                   </span>
                 </div>
+                  {billingCycle==="annually" &&  <div className='mt-6 flex items-baseline'>
+                  <span className='text-[13px] text-[#8e8e93] ml-1'>
+                  $49/month billed annually
+                  </span>
+                </div> }
 
                 <div className='border-t border-[#f2f3f5] pt-6 mt-6 space-y-4'>
                   <span className='text-[11px] font-bold uppercase text-[#0a0a0a] tracking-wider block'>
                     Features included:
                   </span>
                   <ul className='space-y-3 text-[13px] text-[#45515e]'>
+                   
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span className='font-bold text-[#0a0a0a]'>
-                        All 6 platforms
-                      </span>
+                      <span>5,000 messages / month</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>10,000 messages / mo</span>
+                      <span>5 connected channels</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Mood Detection + Lead Scoring</span>
+                      <span>3 team members</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Revenue Analytics + Auto Follow-Ups</span>
+                      <span>50 knowledge documents</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>5 user seats</span>
+                      <span>Growth reports & AI consultant</span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
+                      <span>Priority support</span>
                     </li>
                   </ul>
                 </div>
@@ -302,9 +321,15 @@ export default function PricingPage() {
                     ${enterprisePrice}
                   </span>
                   <span className='text-[13px] text-[#8e8e93] font-semibold ml-1'>
-                    / month
+                   /{billingCycle==='annually'? "year":'month' }
                   </span>
                 </div>
+
+                  {billingCycle==="annually" &&  <div className='mt-6 flex items-baseline'>
+                  <span className='text-[13px] text-[#8e8e93] ml-1'>
+                  $124/month billed annually
+                  </span>
+                </div> }
 
                 <div className='border-t border-[#f2f3f5] pt-6 mt-6 space-y-4'>
                   <span className='text-[11px] font-bold uppercase text-[#0a0a0a] tracking-wider block'>
@@ -313,21 +338,29 @@ export default function PricingPage() {
                   <ul className='space-y-3 text-[13px] text-[#45515e]'>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span className='font-bold text-[#0a0a0a]'>
-                        Unlimited everything
+                      <span>
+                     25,000 AI messages / month
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Custom AI Persona + White-label</span>
+                      <span>Unlimited channels</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Dedicated Account Manager</span>
+                      <span>10 team members</span>
                     </li>
                     <li className='flex items-center gap-2'>
                       <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Custom integrations + unlimited seats</span>
+                      <span>Unlimited knowledge docs</span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
+                      <span>Everything in Pro</span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
+                      <span>Dedicated support</span>
                     </li>
                   </ul>
                 </div>
