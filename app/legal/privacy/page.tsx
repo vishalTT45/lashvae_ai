@@ -461,7 +461,7 @@ export default function PrivacyPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-[32px] font-bold text-[#0a0a0a] tracking-tight">Privacy Notice</h1>
+      <h1 className="text-[32px] font-bold text-[#0a0a0a] tracking-tight">Privacy Policy</h1>
       <p className="text-[12px] text-[#8e8e93]">
         Lashvae Technologies Ltd. &middot; Effective from: 27 July 2026 &middot; Version 1.0
       </p>
