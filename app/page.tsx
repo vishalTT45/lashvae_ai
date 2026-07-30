@@ -44,9 +44,9 @@ const homeChannels = [
 
 export default function Home() {
   return (
-    <div className='flex flex-col w-full bg-white'>
+   <div className='flex flex-col w-full bg-white overflow-x-hidden'>
       {/* 1. Hero Section */}
-      <section className='relative bg-white pt-20 pb-16 sm:pt-28 sm:pb-24 lg:pt-36 lg:pb-32 px-4 sm:px-8'>
+     <section className='relative bg-white pt-10 pb-12 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24 px-4 sm:px-8 lg:min-h-[calc(100vh-80px)] lg:flex lg:items-center'>
         <div className='mx-auto max-w-[1280px] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
           {/* Left Content */}
           <div className='flex flex-col items-start text-left'>
@@ -63,7 +63,7 @@ export default function Home() {
               Meta Official Partner
             </div>
 
-            <h1 className='hero-display-typography text-[#0a0a0a] text-[clamp(28px,8vw,42px)] sm:text-[56px] lg:text-[72px] leading-tight'>
+           <h1 className='hero-display-typography text-[#0a0a0a] text-[clamp(30px,7vw,44px)] sm:text-[48px] md:text-[56px] lg:text-[64px] xl:text-[72px] leading-[1.1]'>
               Every message answered.
               <br />
               <span className='bg-gradient-to-r from-[#ff5530] via-[#ea5ec1] to-[#1456f0] bg-clip-text text-transparent'>
@@ -104,7 +104,7 @@ export default function Home() {
           </div>
 
           {/* Right Content: Image */}
-          <div className='relative w-full aspect-square max-w-[570px] mx-auto lg:mx-0 lg:-mr-8 origin-center overflow-hidden'>
+         <div className='relative w-full aspect-square max-w-[440px] sm:max-w-[520px] lg:max-w-[570px] mx-auto lg:mx-0 lg:ml-auto origin-center overflow-hidden'>
             <Image
               src='/images/lashvae-hero.gif'
               alt='Lashvae AI Hero Dashboard'
@@ -132,7 +132,7 @@ export default function Home() {
         ></div>
         <div className='relative z-10 mx-auto max-w-[1280px]'>
           <div className='mb-12 max-w-4xl'>
-            <h2 className='text-[42px] sm:text-[56px] lg:text-[64px] font-bold tracking-tight leading-none text-white'>
+           <h2 className='text-[34px] sm:text-[48px] md:text-[56px] lg:text-[64px] font-bold tracking-tight leading-[1.05] text-white'>
               Business automation made easy
             </h2>
           </div>
@@ -366,7 +366,7 @@ export default function Home() {
               <span className='inline-flex items-center gap-2 text-[12px] font-semibold text-[#a8aab2] uppercase tracking-wider mb-4'>
                 Ready when you are
               </span>
-              <h2 className='text-[28px] sm:text-[40px] font-bold tracking-tight leading-tight'>
+             <h2 className='text-[24px] sm:text-[32px] md:text-[40px] font-bold tracking-tight leading-tight'>
                 First reply: ~3 Seconds.
                 <br />
                 Total setup: 5 minutes.
