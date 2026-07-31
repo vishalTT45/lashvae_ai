@@ -323,6 +323,7 @@ export default function CompanyPage() {
                           <option value='project'>Project Discussion</option>
                           <option value='partnership'>Partnership</option>
                           <option value='support'>Support</option>
+                          <option value='Privacy/Data Request'>Privacy/Data Request</option>
                           <option value='other'>Other</option>
                         </select>
                         <ChevronDown className='absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8e8e93] pointer-events-none' />
