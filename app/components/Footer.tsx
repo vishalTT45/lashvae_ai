@@ -193,6 +193,14 @@ export default function Footer() {
                   Refund Policy
                 </Link>
               </li>
+               <li>
+                <Link
+                  href='/legal/data-processing-agreement'
+                  className='text-[14px] text-[#a8aab2] transition-colors hover:text-white'
+                >
+                  Data Processing Agreement
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

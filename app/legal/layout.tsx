@@ -1,14 +1,15 @@
 'use client'
 
+import { Mail, ShieldAlert } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ShieldAlert, Mail } from 'lucide-react'
 
 const legalLinks = [
   { name: 'Privacy Policy', href: '/legal/privacy' },
   { name: 'Terms of Service', href: '/legal/terms' },
   { name: 'Security Status', href: '/legal/security' },
-  { name: 'Refund Policy', href: '/legal/refund' }
+  { name: 'Refund Policy', href: '/legal/refund' },
+  { name: 'Data Processing Agreement', href: '/legal/data-processing-agreement' },
 ]
 
 export default function LegalLayout({
