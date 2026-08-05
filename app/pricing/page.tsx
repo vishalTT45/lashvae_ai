@@ -2,121 +2,282 @@
 
 import { Check, ChevronDown, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+type CurrencyCode = 'INR' | 'GBP' | 'USD';
+type BillingCycle = 'monthly' | 'annually';
+
+type PricingPlan = {
+  id: 'trial' | 'basic' | 'growth' | 'enterprise';
+  name: string;
+  headline: string;
+  description: string;
+  monthlyPrice: Record<CurrencyCode, number | null>;
+  annualPrice: Record<CurrencyCode, number | null>;
+  features: string[];
+  highlighted?: boolean;
+  ctaLabel: string;
+  ctaHref: string;
+};
+
+const PRICING_PLANS: PricingPlan[] = [
+  {
+    id: 'trial',
+    name: 'Free Trial',
+    headline: 'Explore Lashvae AI before you subscribe.',
+    description:
+      'Try the complete customer-conversation experience for 14 days with no credit card required.',
+    monthlyPrice: { INR: 0, GBP: 0, USD: 0 },
+    annualPrice: { INR: 0, GBP: 0, USD: 0 },
+    features: [
+      '14-day free trial',
+      '150 conversations',
+      'Connect all available channels',
+      'Unlimited knowledge documents',
+      'AI website chat widget',
+      'Auto appointment booking',
+      'Conversation analytics',
+      'AI chat summaries',
+      'Mood detection',
+      'Smart conversation categorization',
+      'Lead detection',
+    ],
+    ctaLabel: 'Start Free Trial',
+    ctaHref: 'https://app.lashvae.com/login?signup=true',
+  },
+  {
+    id: 'basic',
+    name: 'Basic',
+    headline: 'A simple plan for small businesses.',
+    description:
+      'Handle everyday customer conversations, bookings, leads, and website enquiries from one place.',
+    monthlyPrice: { INR: 999, GBP: 49, USD: 49 },
+    annualPrice: { INR: 9990, GBP: 490, USD: 490 },
+    features: [
+      '300 conversations / month',
+      'Connect all available channels',
+      'Unlimited knowledge documents',
+      'AI website chat widget',
+      'Auto appointment booking',
+      'Conversation analytics',
+      'AI chat summaries',
+      'Mood detection',
+      'Smart conversation categorization',
+      'Lead detection',
+    ],
+    ctaLabel: 'Choose Basic',
+    ctaHref: 'https://app.lashvae.com/login?signup=true',
+  },
+  {
+    id: 'growth',
+    name: 'Growth',
+    headline: 'Built for businesses ready to grow.',
+    description:
+      'Turn customer conversations into content ideas, competitor insights, and clear weekly growth actions.',
+    monthlyPrice: { INR: 1999, GBP: 149, USD: 149 },
+    annualPrice: { INR: 19990, GBP: 1490, USD: 1490 },
+    highlighted: true,
+    features: [
+      '1,500 conversations / month',
+      'Connect all available channels',
+      'Unlimited knowledge documents',
+      'Everything in Basic',
+      'Content ideas from customer conversations',
+      'Competitor analysis',
+      'Industry watch',
+      'Growth reports and AI consultant',
+    ],
+    ctaLabel: 'Choose Growth',
+    ctaHref: 'https://app.lashvae.com/login?signup=true',
+  },
+  {
+    id: 'enterprise',
+    name: 'Enterprise',
+    headline: 'Custom scale for larger organisations.',
+    description:
+      'For larger teams, agencies, franchises, and multi-brand businesses that need tailored support and integrations.',
+    monthlyPrice: { INR: null, GBP: null, USD: null },
+    annualPrice: { INR: null, GBP: null, USD: null },
+    features: [
+      'Custom conversation volume',
+      'Connect all available channels',
+      'Unlimited knowledge documents',
+      'Everything in Growth',
+      'Priority support',
+      'Custom AI workflows',
+      'Custom integrations',
+      'Dedicated account manager',
+    ],
+    ctaLabel: 'Contact Enterprise Sales',
+    ctaHref: '/company#contact',
+  },
+];
 
 const faqs = [
   {
     id: 1,
     question: 'What is Lashvae and how does it work?',
     answer:
-      'Lashvae is an AI-powered omnichannel inbox that unifies messages from Instagram, WhatsApp, Facebook, Telegram, YouTube, and Google Maps into a single dashboard. When a customer sends a message on any of those platforms, our AI reads the context and replies in under ~3 seconds — qualifying leads, answering product questions, and booking appointments automatically.',
+      'Lashvae is an AI-powered omnichannel inbox that brings customer conversations from your connected channels into one dashboard. It can answer questions, identify leads, support bookings, and organise conversations automatically.',
   },
   {
     id: 2,
-    question: 'Which platforms does Lashvae connect to?',
+    question: 'Which platforms can I connect?',
     answer:
-      'Lashvae natively integrates with Instagram DMs & comments, WhatsApp Business, Facebook Messenger & Page comments, Telegram, YouTube comments, and Google Business Messages (Maps reviews). More channels — including TikTok and X — are on the roadmap.',
+      'You can connect all channels currently available in Lashvae. Channel access is not limited by plan.',
   },
   {
     id: 3,
-    question: 'How fast does the AI actually reply?',
+    question: 'Do you limit knowledge documents?',
     answer:
-      "Our median AI response time is 0.31 seconds from message receipt to delivery. That's measured end-to-end across all six platforms at peak load. Industry average human response time is 38 minutes — Lashvae is 7,000× faster.",
+      'No. All plans include unlimited knowledge documents, so you can add the business information your AI assistant needs.',
   },
   {
     id: 4,
-    question: 'Is my customer data safe? Is Lashvae GDPR compliant?',
+    question: 'How does the free trial work?',
     answer:
-      'Yes. Lashvae is GDPR compliant, SOC 2 Type II certified, and ISO 27001 aligned. All messages are encrypted end-to-end in transit and at rest. We never train AI models on your customer data, and you can delete all data at any time from the dashboard. We are also Meta Business Partner verified.',
+      'Every new account receives a 14-day free trial with 150 conversations. No credit card is required to start.',
   },
   {
     id: 5,
-    question: 'Can I customise what the AI says, or does it sound robotic?',
+    question: 'What counts as a conversation?',
     answer:
-      "You control the tone, persona, and knowledge base entirely. Upload your product catalogue, FAQs, and brand voice guidelines — the AI mirrors your style. You can also set hard rules (never mention competitors, always offer a discount code after 3 messages, etc.) and the AI follows them exactly. Most customers can't tell they're talking to an AI.",
+      'A conversation is a customer interaction thread handled through Lashvae. Your monthly allowance is based on conversations rather than individual AI messages.',
   },
   {
     id: 6,
-    question: "What happens when the AI doesn't know the answer?",
+    question: 'What happens when I reach my conversation limit?',
     answer:
-      'Lashvae uses a confidence threshold you set. If a message falls below that threshold, the AI flags it for a human agent and responds with a friendly hold message. Your team gets a push notification and can take over in one click — with full conversation history visible.',
+      'You can upgrade to a higher plan or contact our team for a custom Enterprise conversation allowance.',
   },
   {
     id: 7,
-    question: 'Do I need technical skills to set up Lashvae?',
+    question: 'Can I change plans later?',
     answer:
-      "No code required. Setup takes under 15 minutes: connect your social accounts via OAuth, paste in your brand context, set your working hours, and you're live. Our onboarding specialist walks every new customer through it on a free 30-minute call.",
+      'Yes. You can move between Basic and Growth from your subscription dashboard. Enterprise plans are arranged with our sales team.',
   },
   {
     id: 8,
-    question: 'How does pricing work? Is there a free trial?',
+    question: 'How does location-based pricing work?',
     answer:
-      'Lashvae is billed monthly or annually (save 30%). Every plan starts with a 14-day free trial — no credit card required. Plans scale by monthly message volume. The Starter plan covers up to 5,000 messages/month across all channels; Growth covers 25,000; Enterprise is unlimited with a dedicated SLA.',
+      'Customers in India see INR pricing, customers in the United Kingdom see GBP pricing, and customers in other supported locations see USD pricing.',
   },
   {
     id: 9,
-    question: 'Can Lashvae handle multiple locations or brands?',
+    question: 'What is included in the Growth plan?',
     answer:
-      'Yes. Enterprise and Growth plans support multi-workspace setups — separate inboxes, AI personas, and reporting for each brand or location, all managed from one account. This is popular with franchises, agencies, and multi-brand e-commerce groups.',
+      'Growth includes everything in Basic, plus content ideas from customer conversations, competitor analysis, industry watch, and growth reports with an AI consultant.',
   },
   {
     id: 10,
-    question: 'How does Lashvae increase revenue, not just save time?',
+    question: 'Who should choose Enterprise?',
     answer:
-      'Speed is the primary revenue lever: 78% of customers buy from the business that responds first. Beyond speed, Lashvae identifies buying signals in messages, proactively sends product links and discount codes, recovers abandoned carts via WhatsApp, and routes warm leads directly to your sales calendar — converting conversations into bookings automatically.',
+      'Enterprise is designed for larger teams, agencies, franchises, and businesses that need custom conversation volumes, integrations, workflows, priority support, and a dedicated account manager.',
   },
 ];
 
-export default function PricingPage() {
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annually'>(
-    'annually',
-  );
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+function normalizeCountryCode(value: unknown): string {
+  return typeof value === 'string' ? value.trim().toUpperCase() : '';
+}
 
-  const starterPrice = billingCycle === 'annually' ? 190 : 19;
-  const growthPrice = billingCycle === 'annually' ? 590 : 59;
-  const enterprisePrice = billingCycle === 'annually' ? 1490 : 149;
+function detectCurrency(): CurrencyCode {
+  if (typeof window === 'undefined') {
+    return 'USD';
+  }
+
+  const locale = navigator.language?.toLowerCase() ?? '';
+  const timezone =
+    Intl.DateTimeFormat().resolvedOptions().timeZone?.toLowerCase() ?? '';
+
+  const countryFromLocale = normalizeCountryCode(locale.split('-')[1]);
+
+  if (
+    countryFromLocale === 'IN' ||
+    locale.endsWith('-in') ||
+    timezone.includes('kolkata') ||
+    timezone.includes('calcutta')
+  ) {
+    return 'INR';
+  }
+
+  if (
+    countryFromLocale === 'GB' ||
+    countryFromLocale === 'UK' ||
+    locale.endsWith('-gb') ||
+    timezone.includes('london') ||
+    timezone.includes('belfast')
+  ) {
+    return 'GBP';
+  }
+
+  return 'USD';
+}
+
+function formatPrice(amount: number, currency: CurrencyCode): string {
+  return new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
+export default function PricingPage() {
+  const [billingCycle, setBillingCycle] =
+    useState<BillingCycle>('annually');
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [currency, setCurrency] = useState<CurrencyCode>('USD');
+
+  useEffect(() => {
+    setCurrency(detectCurrency());
+  }, []);
+
+  const currencyLabel = useMemo(() => {
+    if (currency === 'INR') return 'India pricing';
+    if (currency === 'GBP') return 'United Kingdom pricing';
+    return 'International pricing';
+  }, [currency]);
 
   const toggleFAQ = (id: number) => {
-    setExpandedId(expandedId === id ? null : id);
+    setExpandedId((current) => (current === id ? null : id));
   };
 
   return (
-    <div className='flex flex-col w-full bg-white'>
-      {/* 1. Pricing Hero */}
-      <section className='relative overflow-hidden py-20 px-6 sm:px-8 border-b border-[#7fc3cb] bg-[#96DAE2] text-center'>
-        {/* Grid pattern overlay */}
+    <div className='flex w-full flex-col bg-white'>
+      <section className='relative overflow-hidden border-b border-[#7fc3cb] bg-[#96DAE2] px-6 py-20 text-center sm:px-8'>
         <div
-          className='absolute inset-0 opacity-55 pointer-events-none'
+          className='pointer-events-none absolute inset-0 opacity-55'
           style={{
             backgroundImage: `
-            linear-gradient(rgba(255, 255, 255, 0.72) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.72) 1px, transparent 1px)
-          `,
+              linear-gradient(rgba(255,255,255,0.72) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.72) 1px, transparent 1px)
+            `,
             backgroundSize: '280px 280px',
           }}
-        ></div>
+        />
+
         <div className='relative z-10 mx-auto max-w-[1280px]'>
-          <span className='text-[12px] uppercase font-bold tracking-wider text-[#0a0a0a]'>
+          <span className='text-[12px] font-bold uppercase tracking-wider text-[#0a0a0a]'>
             Simple Pricing
           </span>
-          <h1 className='mt-4 text-[42px] sm:text-[56px] font-bold tracking-tight text-[#0a0a0a] leading-none'>
-            One price. Unlimited potential.
+
+          <h1 className='mt-4 text-[42px] font-bold leading-none tracking-tight text-[#0a0a0a] sm:text-[56px]'>
+            Four plans. One smarter inbox.
           </h1>
-          <p className='mt-6 text-[16px] sm:text-[18px] text-[#0a0a0a] max-w-2xl mx-auto leading-relaxed'>
-            No per-seat fees. No surprise charges. Every plan starts with a
-            14-day free trial — no credit card required.
+
+          <p className='mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-[#0a0a0a] sm:text-[18px]'>
+            Start free for 14 days, then choose the conversation volume that
+            matches your business. Every plan includes all available channels
+            and unlimited knowledge documents.
           </p>
         </div>
       </section>
 
-      {/* 2. Billing Cycle Selector */}
-      <section className='py-12 px-6 sm:px-8 bg-white flex flex-col items-center'>
-        <div className='mx-auto max-w-[1280px] w-full flex flex-col items-center'>
-          <div className='flex items-center gap-3 bg-[#f2f3f5] p-1 rounded-full relative'>
+      <section className='flex flex-col items-center bg-white px-6 py-12 sm:px-8'>
+        <div className='mx-auto flex w-full max-w-[1280px] flex-col items-center'>
+          <div className='relative flex items-center gap-3 rounded-full bg-[#f2f3f5] p-1'>
             <button
               onClick={() => setBillingCycle('monthly')}
-              className={`px-5 py-2 rounded-full text-[13px] font-bold transition-all cursor-pointer ${
+              className={`cursor-pointer rounded-full px-5 py-2 text-[13px] font-bold transition-all ${
                 billingCycle === 'monthly'
                   ? 'bg-[#0a0a0a] text-white'
                   : 'bg-transparent text-[#5f5f5f] hover:text-[#0a0a0a]'
@@ -124,9 +285,10 @@ export default function PricingPage() {
             >
               Monthly
             </button>
+
             <button
               onClick={() => setBillingCycle('annually')}
-              className={`px-5 py-2 rounded-full text-[13px] font-bold transition-all cursor-pointer ${
+              className={`cursor-pointer rounded-full px-5 py-2 text-[13px] font-bold transition-all ${
                 billingCycle === 'annually'
                   ? 'bg-[#0a0a0a] text-white'
                   : 'bg-transparent text-[#5f5f5f] hover:text-[#0a0a0a]'
@@ -135,292 +297,189 @@ export default function PricingPage() {
               Annually
             </button>
 
-            {/* Coral Badge Save 20% */}
-            <span className='absolute -top-3.5 -right-16 bg-[#ff5530] text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded-full tracking-wide shadow-sm'>
+            <span className='absolute -right-16 -top-3.5 rounded-full bg-[#ff5530] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white shadow-sm'>
               Save 17%
             </span>
           </div>
 
-          <p className='text-[12px] text-[#8e8e93] mt-3.5'>
+          <p className='mt-3.5 text-[12px] text-[#8e8e93]'>
             {billingCycle === 'annually'
-              ? 'Billed annually — save 17% vs monthly'
+              ? 'Billed annually — save approximately 17%'
               : 'Billed monthly — cancel anytime'}
+          </p>
+
+          <p className='mt-1 text-[12px] font-semibold text-[#1456f0]'>
+            {currencyLabel} · prices shown in {currency}
           </p>
         </div>
       </section>
 
-      {/* 3. Tier Cards Grid */}
-      <section className='pb-24 px-6 sm:px-8 bg-white'>
+      <section className='bg-white px-6 pb-24 sm:px-8'>
         <div className='mx-auto max-w-[1280px]'>
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-5xl mx-auto'>
-            {/* Tier 1: Starter */}
-            <div className='bg-white border border-[#e5e7eb] rounded-xl p-8 flex flex-col justify-between text-left shadow-sm hover:shadow-md transition-shadow duration-200'>
-              <div>
-                <span className='text-[11px] font-bold uppercase tracking-widest text-[#8e8e93]'>
-                  Starter
-                </span>
-                <h3 className='text-[24px] font-bold text-[#0a0a0a] mt-1'>
-                  Perfect for small teams testing the waters.
-                </h3>
-                <p className='text-[13px] text-[#5f5f5f] mt-2'>
-                  Everything you need to get your AI inbox live and start
-                  converting messages.
-                </p>
+          <div className='mx-auto grid max-w-[1280px] grid-cols-1 items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4'>
+            {PRICING_PLANS.map((plan) => {
+              const amount =
+                billingCycle === 'monthly'
+                  ? plan.monthlyPrice[currency]
+                  : plan.annualPrice[currency];
 
-                {/* Price */}
-                <div className='mt-6 flex items-baseline'>
-                  <span className='text-[44px] font-bold tracking-tight text-[#0a0a0a] leading-none'>
-                    ${starterPrice}
-                  </span>
-                  <span className='text-[13px] text-[#8e8e93] font-semibold ml-1'>
-                  /{billingCycle==='annually'? "year":'month' }
-                  </span>
-                </div>
-                  {billingCycle==="annually" &&  <div className='mt-6 flex items-baseline'>
-                  <span className='text-[13px] text-[#8e8e93] ml-1'>
-                  $16/month billed annually
-                  </span>
-                </div> }
+              const isTrial = plan.id === 'trial';
+              const isEnterprise = plan.id === 'enterprise';
+              const monthlyEquivalent =
+                amount !== null && billingCycle === 'annually'
+                  ? Math.round(amount / 12)
+                  : null;
 
-                <div className='border-t border-[#f2f3f5] pt-6 mt-6 space-y-4'>
-                  <span className='text-[11px] font-bold uppercase text-[#0a0a0a] tracking-wider block'>
-                    Features included:
-                  </span>
-                  <ul className='space-y-3 text-[13px] text-[#45515e]'>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>1,000 AI messages / month</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>2 connected channels</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>1 team member</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>10 knowledge documents</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Website chat widget</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Booking system</span>
-                    </li>
+              return (
+                <div
+                  key={plan.id}
+                  className={`relative flex flex-col justify-between rounded-xl border bg-white p-7 text-left transition-shadow duration-200 ${
+                    plan.highlighted
+                      ? 'border-[#1456f0] shadow-lg'
+                      : 'border-[#e5e7eb] shadow-sm hover:shadow-md'
+                  }`}
+                >
+                  {plan.highlighted && (
+                    <span className='absolute -top-3.5 left-7 flex items-center gap-1 rounded-full border border-[#d6e1ff] bg-[#eef3ff] px-3.5 py-1 text-[11px] font-bold uppercase text-[#1456f0] shadow-sm'>
+                      <Sparkles className='h-3 w-3' />
+                      Most Popular
+                    </span>
+                  )}
 
-                   
-                  </ul>
-                </div>
-              </div>
+                  <div>
+                    <span
+                      className={`block text-[11px] font-bold uppercase tracking-widest ${
+                        plan.highlighted ? 'text-[#1456f0]' : 'text-[#8e8e93]'
+                      }`}
+                    >
+                      {plan.name}
+                    </span>
 
-              <Link
-                href='https://app.lashvae.com/login?signup=true'
-                className='mt-8 w-full rounded-full border border-[#0a0a0a] text-[#0a0a0a] py-3 text-[14px] font-semibold hover:bg-[#f7f8fa] transition-colors cursor-pointer text-center'
-              >
-                Start Free Trial
-              </Link>
-            </div>
+                    <h3 className='mt-1 text-[22px] font-bold leading-tight text-[#0a0a0a]'>
+                      {plan.headline}
+                    </h3>
 
-            {/* Tier 2: Pro (Featured + Ambient glow) */}
-            <div className='bg-white border border-[#e5e7eb] rounded-xl p-8 flex flex-col justify-between text-left shadow-lg relative animate-glow'>
-              {/* Badge Popular */}
-              <span className='absolute -top-3.5 left-8 bg-[#e8ffea] text-[#1ba673] text-[11px] font-bold uppercase px-3.5 py-1 rounded-full border border-[#e5e7eb] shadow-sm flex items-center gap-1'>
-                <Sparkles className='h-3 w-3' /> Most Popular
-              </span>
+                    <p className='mt-2 min-h-[60px] text-[13px] leading-relaxed text-[#5f5f5f]'>
+                      {plan.description}
+                    </p>
 
-              <div>
-                <span className='text-[11px] font-bold uppercase tracking-widest text-[#1456f0] mt-1.5 block'>
-                  Growth
-                </span>
-                <h3 className='text-[24px] font-bold text-[#0a0a0a] mt-1'>
-                  The full system for revenue-driven teams.
-                </h3>
-                <p className='text-[13px] text-[#5f5f5f] mt-2'>
-                  All 6 platforms, advanced AI, lead scoring, and revenue
-                  analytics in one place.
-                </p>
+                    <div className='mt-6 flex min-h-[54px] items-baseline'>
+                      {isTrial ? (
+                        <>
+                          <span className='text-[42px] font-bold leading-none tracking-tight text-[#0a0a0a]'>
+                            Free
+                          </span>
+                          <span className='ml-2 text-[13px] font-semibold text-[#8e8e93]'>
+                            for 14 days
+                          </span>
+                        </>
+                      ) : isEnterprise ? (
+                        <span className='text-[40px] font-bold leading-none tracking-tight text-[#0a0a0a]'>
+                          Custom
+                        </span>
+                      ) : (
+                        <>
+                          <span className='text-[42px] font-bold leading-none tracking-tight text-[#0a0a0a]'>
+                            {formatPrice(amount ?? 0, currency)}
+                          </span>
+                          <span className='ml-1 text-[13px] font-semibold text-[#8e8e93]'>
+                            /{billingCycle === 'annually' ? 'year' : 'month'}
+                          </span>
+                        </>
+                      )}
+                    </div>
 
-                {/* Price */}
-                <div className='mt-6 flex items-baseline'>
-                  <span className='text-[44px] font-bold tracking-tight text-[#0a0a0a] leading-none'>
-                    ${growthPrice}
-                  </span>
-                  <span className='text-[13px] text-[#8e8e93] font-semibold ml-1'>
-                    /{billingCycle==='annually'? "year":'month' }
-                  </span>
-                </div>
-                  {billingCycle==="annually" &&  <div className='mt-6 flex items-baseline'>
-                  <span className='text-[13px] text-[#8e8e93] ml-1'>
-                  $49/month billed annually
-                  </span>
-                </div> }
+                    <div className='mt-2 min-h-[22px]'>
+                      {monthlyEquivalent !== null &&
+                        !isTrial &&
+                        !isEnterprise && (
+                          <span className='text-[12px] text-[#8e8e93]'>
+                            {formatPrice(monthlyEquivalent, currency)}/month
+                            billed annually
+                          </span>
+                        )}
+                    </div>
 
-                <div className='border-t border-[#f2f3f5] pt-6 mt-6 space-y-4'>
-                  <span className='text-[11px] font-bold uppercase text-[#0a0a0a] tracking-wider block'>
-                    Features included:
-                  </span>
-                  <ul className='space-y-3 text-[13px] text-[#45515e]'>
-                   
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>5,000 messages / month</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>5 connected channels</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>3 team members</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>50 knowledge documents</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Growth reports & AI consultant</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Priority support</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <Link
-                href='https://app.lashvae.com/login?signup=true'
-                className='mt-8 w-full rounded-full bg-[#0a0a0a] text-white py-3 text-[14px] font-semibold hover:bg-[#222222] transition-colors text-center cursor-pointer shadow-md'
-              >
-                Start 14-day Free Trial
-              </Link>
-            </div>
-
-            {/* Tier 3: Enterprise */}
-            <div className='bg-white border border-[#e5e7eb] rounded-xl p-8 flex flex-col justify-between text-left shadow-sm hover:shadow-md transition-shadow duration-200'>
-              <div>
-                <span className='text-[11px] font-bold uppercase tracking-widest text-[#8e8e93]'>
-                  Enterprise
-                </span>
-                <h3 className='text-[24px] font-bold text-[#0a0a0a] mt-1'>
-                  Custom scale. White-label. Dedicated support.
-                </h3>
-                <p className='text-[13px] text-[#5f5f5f] mt-2'>
-                  For agencies, franchises, and multi-brand e-commerce groups
-                  who need custom everything.
-                </p>
-
-                {/* Price */}
-                <div className='mt-6 flex items-baseline'>
-                  <span className='text-[44px] font-bold tracking-tight text-[#0a0a0a] leading-none'>
-                    ${enterprisePrice}
-                  </span>
-                  <span className='text-[13px] text-[#8e8e93] font-semibold ml-1'>
-                   /{billingCycle==='annually'? "year":'month' }
-                  </span>
-                </div>
-
-                  {billingCycle==="annually" &&  <div className='mt-6 flex items-baseline'>
-                  <span className='text-[13px] text-[#8e8e93] ml-1'>
-                  $124/month billed annually
-                  </span>
-                </div> }
-
-                <div className='border-t border-[#f2f3f5] pt-6 mt-6 space-y-4'>
-                  <span className='text-[11px] font-bold uppercase text-[#0a0a0a] tracking-wider block'>
-                    Features included:
-                  </span>
-                  <ul className='space-y-3 text-[13px] text-[#45515e]'>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>
-                     25,000 AI messages / month
+                    <div className='mt-6 space-y-4 border-t border-[#f2f3f5] pt-6'>
+                      <span className='block text-[11px] font-bold uppercase tracking-wider text-[#0a0a0a]'>
+                        Features included:
                       </span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Unlimited channels</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>10 team members</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Unlimited knowledge docs</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Everything in Pro</span>
-                    </li>
-                    <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 text-emerald-500 shrink-0' />
-                      <span>Dedicated support</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
 
-              <Link
-                href='/company#contact'
-                className='mt-8 w-full rounded-full border border-[#0a0a0a] text-[#0a0a0a] py-3 text-[14px] font-semibold hover:bg-[#f7f8fa] transition-colors text-center cursor-pointer'
-              >
-                Contact Enterprise Sales
-              </Link>
-            </div>
+                      <ul className='space-y-3 text-[13px] text-[#45515e]'>
+                        {plan.features.map((feature) => (
+                          <li
+                            key={feature}
+                            className='flex items-start gap-2'
+                          >
+                            <Check className='mt-0.5 h-4 w-4 shrink-0 text-emerald-500' />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <Link
+                    href={plan.ctaHref}
+                    className={`mt-8 w-full cursor-pointer rounded-full py-3 text-center text-[14px] font-semibold transition-colors ${
+                      plan.highlighted
+                        ? 'bg-[#0a0a0a] text-white shadow-md hover:bg-[#222222]'
+                        : 'border border-[#0a0a0a] text-[#0a0a0a] hover:bg-[#f7f8fa]'
+                    }`}
+                  >
+                    {plan.ctaLabel}
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Frequently Asked Questions */}
-      <section className='bg-white py-16 sm:py-24 px-6 sm:px-8 border-t border-[#eaecf0]'>
+      <section className='border-t border-[#eaecf0] bg-white px-6 py-16 sm:px-8 sm:py-24'>
         <div className='mx-auto max-w-[960px]'>
-          <div className='text-center mb-12'>
-            <span className='text-[12px] uppercase font-bold tracking-wider text-[#1456f0]'>
+          <div className='mb-12 text-center'>
+            <span className='text-[12px] font-bold uppercase tracking-wider text-[#1456f0]'>
               Common Questions
             </span>
-            <h2 className='text-[28px] sm:text-[36px] font-bold text-[#0a0a0a] mt-2'>
+
+            <h2 className='mt-2 text-[28px] font-bold text-[#0a0a0a] sm:text-[36px]'>
               Frequently Asked Questions
             </h2>
-            <p className='text-[14px] sm:text-[15px] text-[#5f5f5f] mt-3 max-w-2xl mx-auto'>
-              Everything you need to know about Lashvae, our platform, pricing,
-              and how we help your business respond faster.
+
+            <p className='mx-auto mt-3 max-w-2xl text-[14px] text-[#5f5f5f] sm:text-[15px]'>
+              Everything you need to know about the free trial, conversation
+              limits, location-based pricing, and plan features.
             </p>
           </div>
 
-          <div className='space-y-0 divide-y divide-[#e5e7eb]'>
+          <div className='divide-y divide-[#e5e7eb]'>
             {faqs.map((faq) => (
-              <div
-                key={faq.id}
-                className='border-t border-[#e5e7eb] first:border-t-0'
-              >
+              <div key={faq.id}>
                 <button
                   onClick={() => toggleFAQ(faq.id)}
-                  className='w-full py-6 px-0 flex items-start justify-between gap-4 hover:text-[#1456f0] transition-colors duration-200 text-left'
+                  className='flex w-full items-start justify-between gap-4 py-6 text-left transition-colors duration-200 hover:text-[#1456f0]'
                 >
-                  <div className='flex items-start gap-4 flex-1'>
-                    <span className='text-[12px] font-bold tracking-wider text-[#1456f0] uppercase flex-shrink-0 pt-1'>
+                  <div className='flex flex-1 items-start gap-4'>
+                    <span className='shrink-0 pt-1 text-[12px] font-bold uppercase tracking-wider text-[#1456f0]'>
                       {String(faq.id).padStart(2, '0')}
                     </span>
-                    <h3 className='text-[16px] sm:text-[17px] font-bold text-[#0a0a0a] leading-snug'>
+
+                    <h3 className='text-[16px] font-bold leading-snug text-[#0a0a0a] sm:text-[17px]'>
                       {faq.question}
                     </h3>
                   </div>
+
                   <ChevronDown
-                    className={`h-5 w-5 text-[#1456f0] flex-shrink-0 transition-transform duration-300 ${
+                    className={`h-5 w-5 shrink-0 text-[#1456f0] transition-transform duration-300 ${
                       expandedId === faq.id ? 'rotate-180' : ''
                     }`}
                   />
                 </button>
 
                 {expandedId === faq.id && (
-                  <div className='pb-6 px-0 pl-10 sm:pl-12 animate-in fade-in duration-200'>
-                    <p className='text-[14px] text-[#5f5f5f] leading-relaxed'>
+                  <div className='animate-in fade-in pb-6 pl-10 duration-200 sm:pl-12'>
+                    <p className='text-[14px] leading-relaxed text-[#5f5f5f]'>
                       {faq.answer}
                     </p>
                   </div>
@@ -429,18 +488,19 @@ export default function PricingPage() {
             ))}
           </div>
 
-          {/* CTA Section */}
-          <div className='mt-16 pt-12 border-t border-[#e5e7eb] text-center'>
-            <h3 className='text-[18px] font-bold text-[#0a0a0a] mb-3'>
+          <div className='mt-16 border-t border-[#e5e7eb] pt-12 text-center'>
+            <h3 className='mb-3 text-[18px] font-bold text-[#0a0a0a]'>
               Still have questions?
             </h3>
-            <p className='text-[14px] text-[#5f5f5f] mb-6'>
-              Can't find the answer you're looking for? Get in touch with our
-              team.
+
+            <p className='mb-6 text-[14px] text-[#5f5f5f]'>
+              Contact our team to discuss the right conversation allowance for
+              your business.
             </p>
+
             <Link
               href='/company#contact'
-              className='inline-block rounded-full bg-[#0a0a0a] text-white px-8 py-3.5 font-semibold text-[14px] hover:bg-[#222222] transition-colors'
+              className='inline-block rounded-full bg-[#0a0a0a] px-8 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#222222]'
             >
               Contact Us
             </Link>
