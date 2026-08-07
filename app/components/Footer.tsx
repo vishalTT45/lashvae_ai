@@ -195,7 +195,7 @@ export default function Footer() {
               </li>
                <li>
                 <Link
-                  href='/legal/data-processing-agreement'
+                  href='/legal/dpa'
                   className='text-[14px] text-[#a8aab2] transition-colors hover:text-white'
                 >
                   Data Processing Agreement
