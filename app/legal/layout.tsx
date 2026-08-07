@@ -9,7 +9,7 @@ const legalLinks = [
   { name: 'Terms of Service', href: '/legal/terms' },
   { name: 'Security Status', href: '/legal/security' },
   { name: 'Refund Policy', href: '/legal/refund' },
-  { name: 'Data Processing Agreement', href: '/legal/data-processing-agreement' },
+  { name: 'Data Processing Agreement', href: '/legal/dpa' },
 ]
 
 export default function LegalLayout({
