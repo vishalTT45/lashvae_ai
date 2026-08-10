@@ -4,6 +4,8 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { channelProducts } from '../channels/data';
+import Button from './Button';
 
 export default function Header() {
   const [channelsOpen, setChannelsOpen] = useState(false);
@@ -113,48 +115,17 @@ export default function Header() {
                   <div className='px-3 py-1.5 text-[11px] font-semibold tracking-wider text-[#8e8e93] uppercase'>
                     Supported Channels
                   </div>
-                  {[
-                    {
-                      name: 'Instagram',
-                      slug: 'instagram',
-                      desc: 'Turn followers into buyers',
-                    },
-                    {
-                      name: 'WhatsApp',
-                      slug: 'whatsapp',
-                      desc: 'Close deals in chat',
-                    },
-                    {
-                      name: 'Facebook',
-                      slug: 'facebook',
-                      desc: 'Own every touchpoint',
-                    },
-                    {
-                      name: 'Telegram',
-                      slug: 'telegram',
-                      desc: 'Automate & broadcast',
-                    },
-                    {
-                      name: 'YouTube',
-                      slug: 'youtube',
-                      desc: 'Monetise your audience',
-                    },
-                    {
-                      name: 'Google Maps',
-                      slug: 'googlemaps',
-                      desc: 'Win the local game',
-                    },
-                  ].map((ch) => (
+                  {channelProducts.map((ch) => (
                     <Link
-                      key={ch.slug}
-                      href={`/channels/${ch.slug}`}
+                      key={ch.id}
+                      href={`/channels/${ch.id}`}
                       onClick={() => setChannelsOpen(false)}
                       className='flex items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] text-[#222222] transition-colors hover:bg-[#f7f8fa]'
                     >
                       <div className='flex flex-col'>
                         <span className='font-medium'>{ch.name}</span>
                         <span className='text-[12px] text-[#8e8e93]'>
-                          {ch.desc}
+                          {ch.tagline}
                         </span>
                       </div>
                     </Link>
@@ -317,18 +288,12 @@ export default function Header() {
 
         {/* Right Side: CTAs */}
         <div className='hidden lg:flex items-center gap-4'>
-          <Link
-            href='https://app.lashvae.com/login'
-            className='rounded-full border border-[#0a0a0a] px-[24px] py-[11px] text-[14px] font-semibold text-[#0a0a0a] transition-all hover:bg-[#f2f3f5] text-center'
-          >
+          <Button href='https://app.lashvae.com/login' variant='secondary' size='md'>
             Login
-          </Link>
-          <Link
-            href='https://app.lashvae.com/login?signup=true'
-            className='rounded-full bg-[#0a0a0a] px-[24px] py-[11px] text-[14px] font-semibold text-white transition-all hover:bg-[#222222] text-center'
-          >
+          </Button>
+          <Button href='https://app.lashvae.com/login?signup=true' variant='primary' size='md'>
             Sign Up
-          </Link>
+          </Button>
         </div>
 
         {/* Hamburger Menu (Mobile) */}
@@ -338,18 +303,18 @@ export default function Header() {
             className='text-[#0a0a0a] p-2 focus:outline-none'
             aria-label='Toggle navigation menu'
           >
-            {mobileMenuOpen ? (
-              <X className='h-6 w-6' />
-            ) : (
-              <Menu className='h-6 w-6' />
-            )}
+            <span key={mobileMenuOpen ? 'close' : 'open'} className='block animate-in fade-in zoom-in-50 duration-200'>
+              {mobileMenuOpen ? <X className='h-6 w-6' /> : <Menu className='h-6 w-6' />}
+            </span>
           </button>
         </div>
       </div>
 
       {/* Mobile Drawer menu */}
       {mobileMenuOpen && (
-        <div className='lg:hidden border-t border-[#eaecf0] bg-white px-6 py-6 shadow-md absolute w-full left-0 transition-all duration-200'>
+        <div
+          className='animate-in fade-in slide-in-from-top-2 duration-200 lg:hidden border-t border-[#eaecf0] bg-white px-6 py-6 shadow-md absolute w-full left-0 max-h-[calc(100vh-64px)] overflow-y-auto'
+        >
           <nav className='flex flex-col gap-4'>
             <Link
               href='/features'
@@ -447,20 +412,22 @@ export default function Header() {
             </Link>
 
             <div className='flex flex-col gap-3 mt-4'>
-              <Link
+              <Button
                 href='https://app.lashvae.com/login'
                 onClick={() => setMobileMenuOpen(false)}
-                className='w-full rounded-full border border-[#0a0a0a] py-3 text-center text-[15px] font-semibold text-[#0a0a0a]'
+                variant='secondary'
+                className='w-full'
               >
                 Login
-              </Link>
-              <Link
+              </Button>
+              <Button
                 href='https://app.lashvae.com/login?signup=true'
                 onClick={() => setMobileMenuOpen(false)}
-                className='w-full rounded-full bg-[#0a0a0a] py-3 text-center text-[15px] font-semibold text-white'
+                variant='primary'
+                className='w-full'
               >
                 Sign Up
-              </Link>
+              </Button>
             </div>
           </nav>
         </div>

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import {
   ArrowRight,
@@ -14,6 +13,9 @@ import {
   Target,
   Zap,
 } from 'lucide-react'
+import Button from '../components/Button'
+import PageHero from '../components/PageHero'
+import SectionHeader from '../components/SectionHeader'
 
 type Feature = {
   title: string
@@ -209,62 +211,65 @@ const features: Feature[] = [
 export default function FeaturesPage() {
   return (
     <div className="flex w-full flex-col bg-white">
-      <section className="relative overflow-hidden border-b border-[#b8325a] bg-[#D93668] px-6 py-20 text-white sm:px-8 sm:py-28">
-        <div className="absolute inset-0 opacity-40 pointer-events-none" style={{
-          backgroundImage: `
-            linear-gradient(rgba(255, 255, 255, 0.42) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.42) 1px, transparent 1px)
-          `,
-          backgroundSize: '280px 280px'
-        }} />
-        <div className="relative z-10 mx-auto max-w-[1280px] text-center">
-          <span className="inline-block rounded-full bg-white/10 px-3.5 py-1 text-[12px] font-bold uppercase tracking-wider text-white/90">
-            Lashvae AI Features
-          </span>
-          <h1 className="mx-auto mt-5 max-w-4xl text-[42px] font-bold leading-tight tracking-tight sm:text-[56px]">
-            Everything your AI inbox needs to reply, route, and convert.
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-white/90">
-            Lashvae understands emotion, scores intent, replies in your brand voice, and turns customer conversations into revenue signals.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        bg="#D93668"
+        eyebrow="Lashvae AI Features"
+        title="Everything your AI inbox needs to reply, route, and convert."
+        subtitle="Lashvae understands emotion, scores intent, replies in your brand voice, and turns customer conversations into revenue signals."
+      />
 
       <section className="bg-[linear-gradient(135deg,#fbfcff_0%,#f8fbff_42%,#f1fbff_100%)] px-6 py-16 sm:px-8 sm:py-24">
         <div className="mx-auto max-w-[1280px]">
-          <div className="mb-12 max-w-2xl">
-            <span className="text-[12px] font-bold uppercase tracking-wider text-[#ff5530]">Core Capabilities</span>
-            <h2 className="heading-md-typography mt-2 text-[#0a0a0a]">Built for high-speed customer conversations.</h2>
-            <p className="mt-3 text-[15px] leading-relaxed text-[#45515e]">
-              These are the product features customers see every day inside Lashvae AI.
-            </p>
-          </div>
+          <SectionHeader
+            eyebrow="Core Capabilities"
+            eyebrowColor="#ff5530"
+            title="Built for high-speed customer conversations."
+            description="These are the product features customers see every day inside Lashvae AI."
+            className="mb-12"
+          />
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            {features.map((feature) => (
-              <article key={feature.title} className="group flex min-h-[520px] flex-col overflow-hidden rounded-[24px] border border-[#dfe4ea] bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(15,23,42,0.12)]">
-                <div className="relative flex h-[300px] shrink-0 items-center justify-start overflow-hidden bg-[#fbfcff] p-7 sm:p-8">
-                  <Image
-                    src={feature.image}
-                    alt=""
-                    width={480}
-                    height={260}
-                    className="h-full w-full rounded-[16px] object-cover object-center transition-transform duration-300 group-hover:scale-[1.03]"
-                  />
-                </div>
+            {features.map((feature) => {
+              const Icon = feature.icon
+              return (
+                <article
+                  key={feature.title}
+                  className="surface-card surface-card-hover group flex flex-col overflow-hidden rounded-[24px]"
+                >
+                  <div className="relative aspect-[16/10] shrink-0 overflow-hidden bg-[#fbfcff] p-6 sm:p-7">
+                    <Image
+                      src={feature.image}
+                      alt=""
+                      fill
+                      className="object-cover object-center p-6 transition-transform duration-500 group-hover:scale-[1.04] sm:p-7"
+                    />
+                    <div
+                      className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full text-white shadow-md sm:left-7 sm:top-7"
+                      style={{ backgroundColor: feature.accent }}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div className="absolute bottom-6 right-6 rounded-xl bg-white/90 px-3 py-2 text-right shadow-sm backdrop-blur sm:bottom-7 sm:right-7">
+                      <div className="text-[20px] font-bold leading-none text-[#0a0a0a]">{feature.metric}</div>
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-[#8e8e93]">
+                        {feature.metricLabel}
+                      </div>
+                    </div>
+                  </div>
 
-                <div className="flex flex-1 flex-col justify-start p-7 sm:p-8">
-                  <h3 className="text-[22px] font-semibold tracking-tight text-[#0a0a0a]">{feature.title}</h3>
-                  <p className="mt-3 max-w-[520px] text-[15px] leading-relaxed text-[#45515e]">{feature.description}</p>
-                </div>
-              </article>
-            ))}
+                  <div className="flex flex-1 flex-col justify-start p-7 sm:p-8">
+                    <h3 className="text-[22px] font-semibold tracking-tight text-[#0a0a0a]">{feature.title}</h3>
+                    <p className="mt-3 max-w-[520px] text-[15px] leading-relaxed text-[#45515e]">{feature.description}</p>
+                  </div>
+                </article>
+              )
+            })}
           </div>
         </div>
       </section>
 
       <section className="border-t border-[#eaecf0] bg-[#f7f8fa] px-6 py-16 sm:px-8 sm:py-24">
-        <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-10 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {[
             {
               title: 'Understands first',
@@ -285,7 +290,7 @@ export default function FeaturesPage() {
             const Icon = item.icon
 
             return (
-              <article key={item.title} className="rounded-xl border border-[#e5e7eb] bg-white p-7 shadow-sm">
+              <article key={item.title} className="surface-card surface-card-hover p-7">
                 <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-[#0a0a0a] text-white">
                   <Icon className="h-5 w-5" />
                 </div>
@@ -300,17 +305,17 @@ export default function FeaturesPage() {
       <section className="bg-white px-6 py-16 sm:px-8 sm:py-24">
         <div className="mx-auto max-w-[1280px] rounded-[32px] bg-[#0a0a0a] px-8 py-16 text-center text-white">
           <div className="mx-auto flex max-w-xl flex-col items-center">
-            <h2 className="text-[28px] font-bold tracking-tight sm:text-[40px]">Ready to let Lashvae answer first?</h2>
+            <h2 className="display-lg-typography text-white">Ready to let Lashvae answer first?</h2>
             <p className="mt-4 text-[14px] leading-relaxed text-[#a8aab2]">
               Start with real-time replies, mood detection, lead scoring, and safe on-brand automation from day one.
             </p>
             <div className="mt-8 flex w-full max-w-md flex-col justify-center gap-4 sm:flex-row">
-              <Link href="/pricing" className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-[14px] font-semibold text-[#0a0a0a] hover:bg-white/95">
+              <Button href="/pricing" variant="white">
                 Start Free <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href="/channels" className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 py-3.5 text-[14px] font-semibold text-white hover:bg-white/20">
+              </Button>
+              <Button href="/channels" variant="whiteOutline">
                 See Channels
-              </Link>
+              </Button>
             </div>
           </div>
         </div>

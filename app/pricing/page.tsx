@@ -1,8 +1,10 @@
 'use client';
 
-import { Check, ChevronDown, Sparkles } from 'lucide-react';
-import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { Check, Sparkles } from 'lucide-react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
+import Button from '../components/Button';
+import FAQAccordion from '../components/FAQAccordion';
+import PageHero from '../components/PageHero';
 
 type CurrencyCode = 'INR' | 'GBP' | 'USD';
 type BillingCycle = 'monthly' | 'annually';
@@ -221,15 +223,21 @@ function formatPrice(amount: number, currency: CurrencyCode): string {
   }).format(amount);
 }
 
+const noSubscription = () => () => {};
+const serverCurrencySnapshot = (): CurrencyCode => 'USD';
+
 export default function PricingPage() {
   const [billingCycle, setBillingCycle] =
     useState<BillingCycle>('annually');
-  const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [currency, setCurrency] = useState<CurrencyCode>('USD');
-
-  useEffect(() => {
-    setCurrency(detectCurrency());
-  }, []);
+  // Currency depends on navigator/Intl (browser-only), so the server always
+  // renders the USD snapshot and this reconciles to the real one after
+  // hydration — the React-recommended way to read external client-only
+  // state without a manual setState-in-effect + hydration mismatch.
+  const currency = useSyncExternalStore(
+    noSubscription,
+    detectCurrency,
+    serverCurrencySnapshot
+  );
 
   const currencyLabel = useMemo(() => {
     if (currency === 'INR') return 'India pricing';
@@ -237,67 +245,40 @@ export default function PricingPage() {
     return 'International pricing';
   }, [currency]);
 
-  const toggleFAQ = (id: number) => {
-    setExpandedId((current) => (current === id ? null : id));
-  };
-
   return (
     <div className='flex w-full flex-col bg-white'>
-      <section className='relative overflow-hidden border-b border-[#7fc3cb] bg-[#96DAE2] px-6 py-20 text-center sm:px-8'>
-        <div
-          className='pointer-events-none absolute inset-0 opacity-55'
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.72) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.72) 1px, transparent 1px)
-            `,
-            backgroundSize: '280px 280px',
-          }}
-        />
-
-        <div className='relative z-10 mx-auto max-w-[1280px]'>
-          <span className='text-[12px] font-bold uppercase tracking-wider text-[#0a0a0a]'>
-            Simple Pricing
-          </span>
-
-          <h1 className='mt-4 text-[42px] font-bold leading-none tracking-tight text-[#0a0a0a] sm:text-[56px]'>
-            Four plans. One smarter inbox.
-          </h1>
-
-          <p className='mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-[#0a0a0a] sm:text-[18px]'>
-            Start free for 14 days, then choose the conversation volume that
-            matches your business. Every plan includes all available channels
-            and unlimited knowledge documents.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        bg='#96DAE2'
+        dark={false}
+        eyebrow='Simple Pricing'
+        title='Four plans. One smarter inbox.'
+        subtitle='Start free for 14 days, then choose the conversation volume that matches your business. Every plan includes all available channels and unlimited knowledge documents.'
+      />
 
       <section className='flex flex-col items-center bg-white px-6 py-12 sm:px-8'>
         <div className='mx-auto flex w-full max-w-[1280px] flex-col items-center'>
-          <div className='relative flex items-center gap-3 rounded-full bg-[#f2f3f5] p-1'>
-            <button
-              onClick={() => setBillingCycle('monthly')}
-              className={`cursor-pointer rounded-full px-5 py-2 text-[13px] font-bold transition-all ${
-                billingCycle === 'monthly'
-                  ? 'bg-[#0a0a0a] text-white'
-                  : 'bg-transparent text-[#5f5f5f] hover:text-[#0a0a0a]'
-              }`}
-            >
-              Monthly
-            </button>
-
-            <button
-              onClick={() => setBillingCycle('annually')}
-              className={`cursor-pointer rounded-full px-5 py-2 text-[13px] font-bold transition-all ${
-                billingCycle === 'annually'
-                  ? 'bg-[#0a0a0a] text-white'
-                  : 'bg-transparent text-[#5f5f5f] hover:text-[#0a0a0a]'
-              }`}
-            >
-              Annually
-            </button>
-
-            <span className='absolute -right-16 -top-3.5 rounded-full bg-[#ff5530] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white shadow-sm'>
+          <div className='flex flex-wrap items-center justify-center gap-3'>
+            <div className='relative flex items-center gap-1 rounded-full bg-[#f2f3f5] p-1'>
+              <span
+                aria-hidden='true'
+                className='absolute inset-y-1 left-1 -z-0 w-[calc(50%-4px)] rounded-full bg-[#0a0a0a] transition-transform duration-300 ease-out'
+                style={{ transform: billingCycle === 'annually' ? 'translateX(calc(100% + 4px))' : 'translateX(0)' }}
+              />
+              {(['monthly', 'annually'] as BillingCycle[]).map((cycle) => (
+                <button
+                  key={cycle}
+                  onClick={() => setBillingCycle(cycle)}
+                  className={`relative z-10 cursor-pointer rounded-full px-5 py-2 text-[13px] font-bold transition-colors ${
+                    billingCycle === cycle
+                      ? 'text-white'
+                      : 'text-[#5f5f5f] hover:text-[#0a0a0a]'
+                  }`}
+                >
+                  {cycle === 'monthly' ? 'Monthly' : 'Annually'}
+                </button>
+              ))}
+            </div>
+            <span className='rounded-full bg-[#ff5530] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm'>
               Save 17%
             </span>
           </div>
@@ -333,7 +314,7 @@ export default function PricingPage() {
               return (
                 <div
                   key={plan.id}
-                  className={`relative flex flex-col justify-between rounded-xl border bg-white p-7 text-left transition-shadow duration-200 ${
+                  className={`relative flex flex-col justify-between rounded-xl border bg-white p-7 text-left transition-all duration-300 hover:-translate-y-1 ${
                     plan.highlighted
                       ? 'border-[#1456f0] shadow-lg'
                       : 'border-[#e5e7eb] shadow-sm hover:shadow-md'
@@ -359,11 +340,11 @@ export default function PricingPage() {
                       {plan.headline}
                     </h3>
 
-                    <p className='mt-2 min-h-[60px] text-[13px] leading-relaxed text-[#5f5f5f]'>
+                    <p className='mt-2 line-clamp-2 text-[13px] leading-relaxed text-[#5f5f5f]'>
                       {plan.description}
                     </p>
 
-                    <div className='mt-6 flex min-h-[54px] items-baseline'>
+                    <div className='mt-6 flex items-baseline'>
                       {isTrial ? (
                         <>
                           <span className='text-[42px] font-bold leading-none tracking-tight text-[#0a0a0a]'>
@@ -389,7 +370,7 @@ export default function PricingPage() {
                       )}
                     </div>
 
-                    <div className='mt-2 min-h-[22px]'>
+                    <div className='mt-2 min-h-[1.2em]'>
                       {monthlyEquivalent !== null &&
                         !isTrial &&
                         !isEnterprise && (
@@ -419,16 +400,13 @@ export default function PricingPage() {
                     </div>
                   </div>
 
-                  <Link
+                  <Button
                     href={plan.ctaHref}
-                    className={`mt-8 w-full cursor-pointer rounded-full py-3 text-center text-[14px] font-semibold transition-colors ${
-                      plan.highlighted
-                        ? 'bg-[#0a0a0a] text-white shadow-md hover:bg-[#222222]'
-                        : 'border border-[#0a0a0a] text-[#0a0a0a] hover:bg-[#f7f8fa]'
-                    }`}
+                    variant={plan.highlighted ? 'primary' : 'secondary'}
+                    className='mt-8 w-full'
                   >
                     {plan.ctaLabel}
-                  </Link>
+                  </Button>
                 </div>
               );
             })}
@@ -453,40 +431,7 @@ export default function PricingPage() {
             </p>
           </div>
 
-          <div className='divide-y divide-[#e5e7eb]'>
-            {faqs.map((faq) => (
-              <div key={faq.id}>
-                <button
-                  onClick={() => toggleFAQ(faq.id)}
-                  className='flex w-full items-start justify-between gap-4 py-6 text-left transition-colors duration-200 hover:text-[#1456f0]'
-                >
-                  <div className='flex flex-1 items-start gap-4'>
-                    <span className='shrink-0 pt-1 text-[12px] font-bold uppercase tracking-wider text-[#1456f0]'>
-                      {String(faq.id).padStart(2, '0')}
-                    </span>
-
-                    <h3 className='text-[16px] font-bold leading-snug text-[#0a0a0a] sm:text-[17px]'>
-                      {faq.question}
-                    </h3>
-                  </div>
-
-                  <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-[#1456f0] transition-transform duration-300 ${
-                      expandedId === faq.id ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-
-                {expandedId === faq.id && (
-                  <div className='animate-in fade-in pb-6 pl-10 duration-200 sm:pl-12'>
-                    <p className='text-[14px] leading-relaxed text-[#5f5f5f]'>
-                      {faq.answer}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          <FAQAccordion items={faqs.map((faq) => ({ q: faq.question, a: faq.answer }))} />
 
           <div className='mt-16 border-t border-[#e5e7eb] pt-12 text-center'>
             <h3 className='mb-3 text-[18px] font-bold text-[#0a0a0a]'>
@@ -498,12 +443,9 @@ export default function PricingPage() {
               your business.
             </p>
 
-            <Link
-              href='/company#contact'
-              className='inline-block rounded-full bg-[#0a0a0a] px-8 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#222222]'
-            >
+            <Button href='/company#contact' variant='primary' size='md'>
               Contact Us
-            </Link>
+            </Button>
           </div>
         </div>
       </section>

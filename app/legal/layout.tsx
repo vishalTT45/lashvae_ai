@@ -68,7 +68,7 @@ export default function LegalLayout({
 
           {/* Column 3: Right Contact / Support info (span 3) */}
           <aside className="lg:col-span-3 space-y-6 text-left">
-            <div className="border border-[#e5e7eb] rounded-xl p-5 bg-[#f7f8fa] space-y-4">
+            <div className="surface-card p-5 bg-[#f7f8fa] space-y-4">
               <div className="flex items-center gap-2 text-[#0a0a0a]">
                 <ShieldAlert className="h-5 w-5 text-[#ff5530]" />
                 <h4 className="text-[13px] font-bold uppercase tracking-wider">Compliance</h4>

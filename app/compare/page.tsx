@@ -2,8 +2,10 @@
 
 import { Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { Check, X, ShieldCheck } from 'lucide-react'
+import Button from '../components/Button'
+import PageHero from '../components/PageHero'
+import StaggerReveal from '../components/StaggerReveal'
 
 type Competitor = 'manychat' | 'intercom' | 'tidio' | 'gorgias'
 
@@ -254,10 +256,10 @@ function CompareContent() {
           <button
             key={key}
             onClick={() => router.replace(`/compare?vs=${key}`, { scroll: false })}
-            className={`px-6 py-2.5 rounded-full text-[14px] font-semibold transition-all cursor-pointer ${
+            className={`px-6 py-2.5 rounded-full text-[14px] font-semibold transition-all duration-300 cursor-pointer border ${
               activeTab === key
-                ? 'bg-[#0a0a0a] text-white border border-[#0a0a0a]'
-                : 'bg-white text-[#5f5f5f] border border-[#e5e7eb] hover:bg-[#f7f8fa]'
+                ? 'bg-[#0a0a0a] text-white border-[#0a0a0a] scale-105'
+                : 'bg-white text-[#5f5f5f] border-[#e5e7eb] hover:bg-[#f7f8fa]'
             }`}
           >
             vs. {comparisonData[key].name}
@@ -280,9 +282,10 @@ function CompareContent() {
         </div>
 
         {/* Table Body Rows */}
-        <div className="divide-y divide-[#eaecf0]">
-          {currentData.rows.map((row, idx) => (
-            <div key={idx} className="grid grid-cols-12 p-4 sm:p-6 text-left items-start gap-4 md:gap-0">
+        <div key={activeTab} className="animate-in fade-in duration-300">
+          <StaggerReveal className="divide-y divide-[#eaecf0]" stagger={0.06} y={16} start="top 95%">
+              {currentData.rows.map((row, idx) => (
+                <div key={idx} className="grid grid-cols-12 p-4 sm:p-6 text-left items-start gap-4 md:gap-0">
               
               {/* Feature Description (Col 1) */}
               <div className="col-span-12 md:col-span-4 md:pr-6">
@@ -331,7 +334,8 @@ function CompareContent() {
               </div>
 
             </div>
-          ))}
+              ))}
+          </StaggerReveal>
         </div>
 
       </div>
@@ -349,9 +353,9 @@ function CompareContent() {
             </p>
           </div>
         </div>
-        <Link href="/pricing" className="rounded-full bg-[#0a0a0a] text-white px-6 py-3 text-[13px] font-semibold hover:bg-[#222222] transition-colors shrink-0">
+        <Button href="/pricing" variant="primary" size="md" className="shrink-0">
           See Performance Tiers
-        </Link>
+        </Button>
       </div>
 
     </div>
@@ -363,25 +367,12 @@ export default function ComparePage() {
     <div className="flex flex-col w-full bg-white">
       
       {/* Hero Header */}
-      <section className="relative overflow-hidden py-20 px-6 sm:px-8 border-b border-[#eaecf0] bg-[#007257] text-center text-white">
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 opacity-40 pointer-events-none" style={{
-          backgroundImage: `
-            linear-gradient(rgba(255, 255, 255, 0.42) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.42) 1px, transparent 1px)
-          `,
-          backgroundSize: '280px 280px'
-        }}></div>
-        <div className="mx-auto max-w-[1280px] relative z-10">
-          <span className="text-[12px] uppercase font-bold tracking-wider text-white/90 bg-white/10 px-3.5 py-1 rounded-full inline-block">Objective Comparison</span>
-          <h1 className="mt-4 text-[42px] sm:text-[56px] font-bold tracking-tight text-white leading-none">
-            See why leading support teams choose Lashvae AI.
-          </h1>
-          <p className="mt-6 text-[16px] sm:text-[18px] text-white/85 max-w-2xl mx-auto leading-relaxed">
-            Legacy chat interfaces require manual flow charts and keyword triggers. Lashvae uses multi-step reasoning to automate tickets dynamically.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        bg="#007257"
+        eyebrow="Objective Comparison"
+        title="See why leading support teams choose Lashvae AI."
+        subtitle="Legacy chat interfaces require manual flow charts and keyword triggers. Lashvae uses multi-step reasoning to automate tickets dynamically."
+      />
 
       {/* Comparison Grid */}
       <section className="py-16 px-6 sm:px-8 bg-white">

@@ -9,7 +9,7 @@ export default function Footer() {
     <footer className='w-full bg-[#0a0a0a] text-white py-16 px-6 sm:px-8 border-t border-[#181e25]'>
       <div className='mx-auto max-w-[1280px]'>
         {/* Top Region: Link Columns */}
-        <div className='grid grid-cols-1 gap-10 md:grid-cols-4 lg:gap-16 pb-12 border-b border-[#181e25]'>
+        <div className='grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4 lg:gap-16 pb-12 border-b border-[#181e25]'>
           {/* Brand Col */}
           <div className='flex flex-col gap-4'>
             <Link href='/' className='flex items-center gap-3'>
@@ -34,7 +34,7 @@ export default function Footer() {
                 href='https://www.instagram.com/lashvae_ai'
                 target='_blank'
                 rel='noreferrer'
-                className='text-[#a8aab2] transition-colors hover:text-white'
+                className='text-[#a8aab2] transition-all duration-200 hover:text-white hover:scale-[1.15] hover:-translate-y-0.5 active:scale-90 inline-block'
                 aria-label='Instagram Link'
                 id='footer-social-instagram'
               >
@@ -58,7 +58,7 @@ export default function Footer() {
                 href='https://www.linkedin.com/company/lashvae/'
                 target='_blank'
                 rel='noreferrer'
-                className='text-[#a8aab2] transition-colors hover:text-white'
+                className='text-[#a8aab2] transition-all duration-200 hover:text-white hover:scale-[1.15] hover:-translate-y-0.5 active:scale-90 inline-block'
                 aria-label='LinkedIn Link'
                 id='footer-social-linkedin'
               >

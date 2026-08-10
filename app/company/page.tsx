@@ -2,14 +2,12 @@
 
 import emailjs from '@emailjs/browser';
 import {
-  ArrowUpRight,
   CheckCircle,
   ChevronDown,
-  Layers,
-  Mail,
   Send,
 } from 'lucide-react';
 import { useState } from 'react';
+import Button from '../components/Button';
 
 export default function CompanyPage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -61,7 +59,7 @@ export default function CompanyPage() {
         message: '',
         agreed: false,
       });
-    } catch (err) {
+    } catch {
       setFormError(true);
     } finally {
       setIsSubmitting(false);
@@ -133,7 +131,7 @@ export default function CompanyPage() {
             </p>
           </div>
 
-          <div className="border border-[#e5e7eb] rounded-xl overflow-hidden max-w-4xl">
+          <div className="surface-card overflow-hidden max-w-4xl">
             <div className="p-10 flex flex-col items-center justify-center text-center bg-white">
               <h3 className="text-[18px] font-bold text-[#0a0a0a]">Coming Soon</h3>
               <p className="text-[14px] text-[#5f5f5f] mt-2">Exciting content is on the way. Stay tuned for our latest insights and research.</p>
@@ -151,7 +149,7 @@ export default function CompanyPage() {
             <p className="text-[#0a0a0a] mt-3">We are looking for builders who want to re-architect global support pipelines.</p>
           </div>
 
-          <div className='border border-[#e5e7eb] rounded-xl overflow-hidden max-w-4xl'>
+          <div className='surface-card overflow-hidden max-w-4xl'>
             <div className='p-10 flex flex-col items-center justify-center text-center bg-[#f7f8fa]'>
               <h3 className='text-[18px] font-bold text-[#0a0a0a]'>
                 We don&apos;t have any openings right now.
@@ -178,7 +176,7 @@ export default function CompanyPage() {
                 <span className="text-[12px] uppercase font-bold tracking-wider text-[#ff5530]">Get in touch</span>
                 <h2 className="heading-md-typography mt-2 text-[#0a0a0a]">Start the conversation</h2>
                 <p className="text-[#5f5f5f] mt-3">
-                  We're available across multiple channels. Pick whichever works best for you.
+                  We&apos;re available across multiple channels. Pick whichever works best for you.
                 </p>
               </div>
 
@@ -212,7 +210,7 @@ export default function CompanyPage() {
                     Thanks for reaching out! One of our enterprise solutions
                     engineers will contact you shortly.
                   </p>
-                  <button
+                  <Button
                     onClick={() => {
                       setFormSubmitted(false);
                       setFormData({
@@ -225,10 +223,12 @@ export default function CompanyPage() {
                         agreed: false,
                       });
                     }}
-                    className='mt-4 rounded-full border border-[#0a0a0a] text-[#0a0a0a] px-6 py-2 text-xs font-semibold hover:bg-white transition-colors'
+                    variant='secondary'
+                    size='md'
+                    className='mt-4'
                   >
                     Send another inquiry
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className='space-y-5 text-left'>
@@ -250,7 +250,7 @@ export default function CompanyPage() {
                           setFormData({ ...formData, name: e.target.value })
                         }
                         placeholder='John Doe'
-                        className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] focus:outline-none focus:border-2 focus:border-[#1d4ed8]'
+                        className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] transition-colors focus:outline-none focus:border-2 focus:border-[#1d4ed8]'
                       />
                     </div>
 
@@ -270,7 +270,7 @@ export default function CompanyPage() {
                           setFormData({ ...formData, email: e.target.value })
                         }
                         placeholder='john@company.com'
-                        className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] focus:outline-none focus:border-2 focus:border-[#1d4ed8]'
+                        className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] transition-colors focus:outline-none focus:border-2 focus:border-[#1d4ed8]'
                       />
                     </div>
                   </div>
@@ -292,7 +292,7 @@ export default function CompanyPage() {
                           setFormData({ ...formData, phone: e.target.value })
                         }
                         placeholder='+91 98765 43210'
-                        className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] focus:outline-none focus:border-2 focus:border-[#1d4ed8]'
+                        className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] transition-colors focus:outline-none focus:border-2 focus:border-[#1d4ed8]'
                       />
                     </div>
 
@@ -314,7 +314,7 @@ export default function CompanyPage() {
                               subject: e.target.value,
                             })
                           }
-                          className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] focus:outline-none focus:border-2 focus:border-[#1d4ed8] appearance-none cursor-pointer'
+                          className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] transition-colors focus:outline-none focus:border-2 focus:border-[#1d4ed8] appearance-none cursor-pointer'
                         >
                           <option value='' disabled>
                             Select a topic
@@ -347,7 +347,7 @@ export default function CompanyPage() {
                         setFormData({ ...formData, company: e.target.value })
                       }
                       placeholder='Acme Corp'
-                      className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] focus:outline-none focus:border-2 focus:border-[#1d4ed8]'
+                      className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] transition-colors focus:outline-none focus:border-2 focus:border-[#1d4ed8]'
                     />
                   </div>
 
@@ -368,7 +368,7 @@ export default function CompanyPage() {
                         setFormData({ ...formData, message: e.target.value })
                       }
                       placeholder='Tell us about your support channels, monthly ticket volumes, or vector integrations...'
-                      className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] focus:outline-none focus:border-2 focus:border-[#1d4ed8] resize-none'
+                      className='w-full bg-white border border-[#e5e7eb] rounded-md px-3.5 py-2.5 text-[14px] text-[#0a0a0a] placeholder-[#8e8e93] transition-colors focus:outline-none focus:border-2 focus:border-[#1d4ed8] resize-none'
                     />
                   </div>
 
@@ -414,13 +414,15 @@ export default function CompanyPage() {
                     </div>
                   )}
 
-                  <button
+                  <Button
                     type='submit'
-                    className='w-full rounded-full bg-[#0a0a0a] text-white py-3 text-[14px] font-bold hover:bg-[#222222] transition-colors flex items-center justify-center gap-1.5 cursor-pointer'
+                    disabled={isSubmitting}
+                    variant='primary'
+                    className='w-full'
                   >
                     {isSubmitting ? 'Sending...' : 'Submit Request'}{' '}
                     {!isSubmitting && <Send className='h-4 w-4' />}
-                  </button>
+                  </Button>
                 </form>
               )}
             </div>

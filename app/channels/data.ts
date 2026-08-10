@@ -15,6 +15,8 @@ export type ChannelProduct = {
   id: ChannelId;
   name: string;
   tagline: string;
+  /** Longer, descriptive one-liner used on the channel grid cards (home + channels index). */
+  blurb: string;
   statValue: string;
   statLabel: string;
   color: string;
@@ -72,6 +74,7 @@ export const channelProducts: ChannelProduct[] = [
     id: 'instagram',
     name: 'Instagram',
     tagline: 'Turn followers into buyers',
+    blurb: 'Turn followers into qualified customer conversations.',
     statValue: '2.4k',
     statLabel: 'DMs handled daily',
     color: '#e1306c',
@@ -99,6 +102,7 @@ export const channelProducts: ChannelProduct[] = [
     id: 'whatsapp',
     name: 'WhatsApp',
     tagline: 'Close deals in chat',
+    blurb: 'Transform high-intent chats into loyal customers.',
     statValue: '98%',
     statLabel: 'open rate vs email',
     color: '#25d366',
@@ -120,6 +124,7 @@ export const channelProducts: ChannelProduct[] = [
     id: 'facebook',
     name: 'Facebook',
     tagline: 'Own every touchpoint',
+    blurb: 'Auto-respond to inbound messages before leads go cold.',
     statValue: '3.2x',
     statLabel: 'more conversions',
     color: '#1877f2',
@@ -147,6 +152,7 @@ export const channelProducts: ChannelProduct[] = [
     id: 'telegram',
     name: 'Telegram',
     tagline: 'Automate and broadcast',
+    blurb: 'Automate group, bot, and channel conversations.',
     statValue: 'Unlimited',
     statLabel: 'group members reached',
     color: '#229ed9',
@@ -171,6 +177,7 @@ export const channelProducts: ChannelProduct[] = [
     id: 'youtube',
     name: 'YouTube',
     tagline: 'Monetize your audience',
+    blurb: 'Convert comments and creator engagement into demand.',
     statValue: '510',
     statLabel: 'comments replied daily',
     color: '#ff0000',
@@ -192,6 +199,7 @@ export const channelProducts: ChannelProduct[] = [
     id: 'googlemaps',
     name: 'Google Maps',
     tagline: 'Win the local game',
+    blurb: 'Reply to reviews and local questions instantly.',
     statValue: '+31%',
     statLabel: 'rating lift on avg',
     color: '#4285f4',
